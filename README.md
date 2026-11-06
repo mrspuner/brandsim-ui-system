@@ -29,6 +29,9 @@ python3 -m http.server 8000
 bash kit/design-gate.sh
 ```
 
+Гейту нужны bash и Python 3. На macOS и Linux они есть; на Windows запускайте
+из Git Bash или WSL.
+
 ## Что читать и в каком порядке
 
 | # | Файл | Что это |
