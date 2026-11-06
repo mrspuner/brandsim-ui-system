@@ -1,0 +1,2528 @@
+/* ---------- design tokens (DESIGN.md) ---------- */
+:root {
+  color-scheme: light;
+
+  /* ==================== ЯРУС 1 — ПРИМИТИВЫ ====================
+     Сырые значения. О ролях не знают, в разметке напрямую не
+     используются: на них ссылается только ярус 2.
+
+     Имя = тон + ступень, где ступень это светлота: 0 — белое, 950 — почти
+     чёрное. Прежние имена палитры (paper, ash, ink, ember, sulfur,
+     crimson, jade) сняты: двадцать шесть несвязанных слов не
+     группировались ни во что, и по имени нельзя было сказать ни какой это
+     цвет, ни светлее он соседнего или темнее. Характер никуда не делся —
+     Ember, Sulfur и остальные живут в правилах DESIGN.md и в семантическом
+     ярусе, где им и место.
+
+     Числа посчитаны, а не назначены: ступень = (100 − светлота HSL),
+     округлённая до 50. */
+
+  /* нейтральные — от бумаги к чернилам */
+  --color-base-neutral-0: #ffffff;
+  --color-base-neutral-25: #fafafa;
+  --color-base-neutral-50: #efefef;
+  --color-base-neutral-100: #e6e6e6;
+  --color-base-neutral-150: #e0e0e0;
+  --color-base-neutral-200: #d9d9d9;
+  --color-base-neutral-250: #d6d6d6;
+  --color-base-neutral-500: #828282;
+  --color-base-neutral-700: #4d4d4d;
+  --color-base-neutral-900: #202020;
+  --color-base-neutral-950: #070607;
+
+  /* оранжевый — акцент системы */
+  --color-base-orange-50: #fff3ed;
+  --color-base-orange-500: #fc5000;
+  --color-base-orange-600: #eb4c02;
+  --color-base-orange-650: #b83b00;
+
+  /* жёлтый — предупреждение и латунь данных */
+  --color-base-yellow-100: #fcfccf;
+  --color-base-yellow-200: #f5f28e;
+  --color-base-yellow-500: #e8c320;
+  --color-base-yellow-700: #816729;
+
+  /* красный — ошибка */
+  --color-base-red-100: #fccdca;
+  --color-base-red-200: #fe9593;
+  --color-base-red-500: #ff003a;
+
+  /* зелёный — «всё в порядке» и рост */
+  --color-base-green-50: #eef5f0;
+  --color-base-green-700: #2a7d4f;
+
+  /* прозрачные — тот же тон со сквозным каналом; суффикс a — альфа в
+     процентах, поэтому по имени видно и тон, и степень прозрачности */
+  --color-base-neutral-0-a72: rgba(255, 255, 255, .72);
+  --color-base-neutral-900-a10: rgba(32, 32, 32, .1);
+  --color-base-neutral-950-a32: rgba(7, 6, 7, .32);
+
+  /* Категориальная палитра радара (DESIGN.md → Категориальная палитра
+     диаграмм). Ярусом выше не поднимается: это цвета данных, а не роли
+     интерфейса. Используется только в radar.js. */
+  /* Пунктиры предпочтений сегментов: Премиум, Семейный, Эконом. */
+  --color-base-chart-2: #2f8f6b;
+  --color-base-chart-3: #7a3f91;
+  --color-base-chart-7: #83891f;
+  /* Свои бренды — тёплая группа от красного к оранжевому: Nordika на радаре
+     читается одним семейством. */
+  --color-base-chart-own-1: #d8341c;
+  --color-base-chart-own-2: #f2641a;
+  --color-base-chart-own-3: #f39a2e;
+  /* Конкуренты — семейство оттенков на компанию: a — Vektor,
+     b — Orion, c — Polar, other — все прочие. Синий допустим только здесь:
+     гейт пропускает его лишь в объявлениях --color-base-chart-rival-*. */
+  --color-base-chart-rival-a-1: #1f5fb8;
+  --color-base-chart-rival-a-2: #6a9ee0;
+  --color-base-chart-rival-a-3: #123a73;
+  --color-base-chart-rival-b-1: #12707e;
+  --color-base-chart-rival-b-2: #5fb4c0;
+  --color-base-chart-rival-c-1: #7a4a22;
+  --color-base-chart-rival-c-2: #b88a55;
+  --color-base-chart-rival-other-1: #4b5563;
+  --color-base-chart-rival-other-2: #8a939e;
+
+  /* ==================== ЯРУС 2 — СЕМАНТИЧЕСКИЕ ====================
+     Роль, а не цвет. Category-Type-Item. Именно этого яруса не было: роль
+     адресовалась примитивом напрямую, и одна роль получала два имени —
+     оранжевый акцента жил как --ember и как --accent, 36 вызовов на двоих,
+     и какое имя возьмёт следующая задача, решал случай. */
+
+  --color-bg-page: var(--color-base-neutral-0);
+  --color-bg-surface: var(--color-base-neutral-0);
+  --color-bg-card: var(--color-base-neutral-50);
+  --color-bg-data: var(--color-base-neutral-25);
+  --color-bg-accent: var(--color-base-orange-500);
+  /* заливка акцента под курсором: заметно темнее, чтобы наведение читалось */
+  --color-bg-accent-hover: var(--color-base-orange-650);
+  --color-bg-warning: var(--color-base-yellow-200);
+  --color-bg-danger: var(--color-base-red-200);
+  --color-bg-danger-strong: var(--color-base-red-500);
+  /* Мягкие ступени тона: подложка под группой элементов, внутри которой
+     уже стоит насыщенный тег того же тона (капсула проверки в полосе). */
+  --color-bg-warning-soft: var(--color-base-yellow-100);
+  --color-bg-danger-soft: var(--color-base-red-100);
+  --color-bg-success: var(--color-base-green-50);
+  --color-bg-track: var(--color-base-neutral-150);
+  /* Ахроматическая лестница заливок: strong → secondary → tertiary. */
+  --color-bg-strong: var(--color-base-neutral-950);
+  --color-bg-secondary: var(--color-base-neutral-700);
+  --color-bg-tertiary: var(--color-base-neutral-500);
+  --color-bg-scrim: var(--color-base-neutral-950-a32);
+  --color-bg-veil: var(--color-base-neutral-0-a72);
+
+  --color-text-primary: var(--color-base-neutral-900);
+  --color-text-strong: var(--color-base-neutral-950);
+  --color-text-secondary: var(--color-base-neutral-700);
+  --color-text-tertiary: var(--color-base-neutral-500);
+  --color-text-faint: var(--color-base-neutral-150);
+  --color-text-inverse: var(--color-base-neutral-0);
+  --color-text-danger: var(--color-base-red-500);
+  --color-text-warning: var(--color-base-yellow-700);
+  --color-text-success: var(--color-base-green-700);
+  --color-text-on-accent: var(--color-base-neutral-0);
+  /* На тёмной заливке (полоса экрана и блок итогов справочного слоя): текст,
+     линии и подложки — белый с прозрачностью; рост и падение — зелёный и
+     красный, высветленные до читаемых на чёрном. */
+  --color-text-inverse-secondary: color-mix(in srgb, var(--color-base-neutral-0) 64%, transparent);
+  --color-text-inverse-tertiary: color-mix(in srgb, var(--color-base-neutral-0) 46%, transparent);
+  --color-bg-inverse-tertiary: color-mix(in srgb, var(--color-base-neutral-0) 46%, transparent);
+  --color-border-inverse: color-mix(in srgb, var(--color-base-neutral-0) 16%, transparent);
+  --color-bg-inverse-soft: color-mix(in srgb, var(--color-base-neutral-0) 8%, transparent);
+  --color-text-success-inverse: color-mix(in srgb, var(--color-base-green-700), var(--color-base-neutral-0) 60%);
+  --color-bg-success-inverse: color-mix(in srgb, var(--color-base-green-700) 30%, transparent);
+  --color-text-danger-inverse: color-mix(in srgb, var(--color-base-red-500), var(--color-base-neutral-0) 45%);
+  --color-bg-danger-inverse: color-mix(in srgb, var(--color-base-red-500) 26%, transparent);
+
+  --color-border-default: var(--color-base-neutral-150);
+  --color-border-soft: var(--color-base-neutral-100);
+  --color-border-control: var(--color-base-neutral-250);
+  --color-border-strong: var(--color-base-neutral-900);
+  --color-border-veil: var(--color-base-neutral-900-a10);
+
+  --color-action: var(--color-base-orange-500);
+  --color-action-text: var(--color-base-neutral-950);
+  --color-status-danger: var(--color-base-red-500);
+  --color-status-warning: var(--color-base-yellow-500);
+  --color-status-warning-line: var(--color-base-yellow-700);
+  --color-status-success: var(--color-base-green-700);
+
+  /* ==================== ЯРУС 3 — КОМПОНЕНТНЫЕ ====================
+     Правило принадлежности (CTI): токен компонентный, если нужно поменять
+     один компонент, не задев остальных, использующих ту же семантику. Их
+     мало — и это хороший признак, а не недоработка. */
+
+  --color-bg-chip-claim: var(--color-base-orange-50);
+  --color-text-chip-claim: var(--color-base-orange-600);
+  --color-bg-tooltip: var(--color-base-neutral-900);
+  --color-bg-switch-track: var(--color-base-neutral-250);
+  --color-bg-slider-track: var(--color-base-neutral-200);
+  --color-bg-rank-1: var(--color-base-neutral-950);
+  --color-bg-rank-2: var(--color-base-neutral-700);
+  --color-bg-rank-3: var(--color-base-neutral-500);
+
+  /* Компоненты, которые встают и на светлую, и на тёмную поверхность: таб,
+     панель табов, чип borderless, знак подсказки. Светлое значение — здесь,
+     тёмное — в .theme-dark ниже. Компонент берёт только свой токен и про
+     поверхность под собой ничего не знает. */
+  --color-text-tab: var(--color-text-secondary);
+  --color-text-tab-hover: var(--color-text-strong);
+  --color-bg-tab-active: var(--color-bg-card);
+  --color-text-tab-active: var(--color-text-primary);
+  --color-bg-chip: transparent;
+  --color-text-chip: var(--color-text-secondary);
+  --color-bg-chip-success: var(--color-bg-success);
+  --color-text-chip-success: var(--color-text-success);
+  --color-bg-chip-danger: var(--color-bg-danger);
+  --color-text-chip-danger: var(--color-text-primary);
+  --color-bg-chip-warning: var(--color-bg-warning);
+  --color-text-chip-warning: var(--color-text-primary);
+  --color-bg-help-tip: var(--color-bg-tertiary);
+  --color-bg-help-tip-hover: var(--color-bg-secondary);
+  --color-text-help-tip: var(--color-text-inverse);
+
+  /* ==================== ОСТАЛЬНЫЕ КАТЕГОРИИ ==================== */
+
+  --radius-xs: 8px;
+  --radius-sm: 16px;
+  --radius-md: 20px;
+  --radius-lg: 32px;
+  --radius-xl: 40px;
+  --radius-pill: 999px;
+
+  --shadow-surface: 0 7px 30px rgba(0, 0, 0, .06), 0 7px 16.6px rgba(0, 0, 0, .02), 0 3px 6px rgba(0, 0, 0, .08);
+  --shadow-overlay: 0 8px 24px rgba(0, 0, 0, .08);
+
+  --font-family-text: Rubik, "SF Pro Text", system-ui, -apple-system, sans-serif;
+  --font-family-display: "Oswald", "Arial Narrow", sans-serif;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  /* Поле крупной карточки: «Гипотеза долей». Между шагами 6 и 7 шкалы,
+     поэтому не номер, а имя роли. */
+  --space-card: 28px;
+
+  /* Высоты контролов. Три ступени на всю систему: control — поле, селект и
+     кнопка; control-sm — таб, иконочная кнопка, чип; control-xs — бейдж и
+     счётчик. До этой шкалы каждый компонент носил своё число (40, 38, 32,
+     30, 22), и совпадения были случайными. */
+  --size-control: 40px;
+  --size-control-sm: 32px;
+  --size-control-xs: 22px;
+  /* Колонка поля: подпись строки свойства, поле, чип заявления, сетка R&D,
+     ширина текста ошибки. */
+  --size-field: 200px;
+  /* Геометрия слайдера — компонентные токены Ant Slider. */
+  --size-slider-rail: 2px;
+  --size-slider-rail-hover: 3px;
+  --size-slider-handle: 6px;
+  --size-slider-handle-hover: 9px;
+  --size-slider-mark: 10px;
+  /* Справочный слой («Показатели», «Рынок»): полосы и точки в ячейках таблиц,
+     колонки таблицы конкурентов. */
+  --size-ref-bar: 120px;          /* доля от лидера, вес свойства */
+  --size-ref-bar-sm: 48px;        /* та же полоса в широкой таблице; маржа в P&L */
+  --size-ref-bar-h: 8px;
+  --size-ref-bar-h-sm: 6px;
+  --size-ref-diverge: 140px;      /* Gain/Loss */
+  --size-ref-diverge-sm: 64px;
+  --size-ref-num: 48px;           /* число рядом с полосой */
+  --size-ref-slot: 36px;          /* слот изменения справа от числа */
+  --size-ref-split: 12px;         /* полоса компаний в плитке итогов, столбец BEI */
+  --size-ref-stack: 64px;         /* полоса долей компаний рынка */
+  --size-ref-spark: 48px;         /* высота графика в плитке итогов */
+  --size-ref-dot: 8px;
+  --size-ref-dot-lg: 14px;        /* точки гантелей гипотезы */
+  --size-ref-gap: 2px;            /* зазор между кусками полосы, белый столбец между группами шапки */
+  --size-ref-col-seg: 116px;      /* «Что сделали конкуренты»: коммуникация в сегмент */
+  --size-ref-col-channel: 152px;  /* там же: канал продаж */
+  --size-ref-profile-min: 180px;
+  --size-ref-profile-max: 280px;
+  --size-ref-statement: 340px;    /* там же: позиционирование — самая длинная из 17 формулировок брифа в 3 строки */
+  --radius-ref-bar: 2px;
+  /* Знак подсказки: круг по размеру helpTip({ size }) */
+  --size-help-sm: 14px;
+  --size-help-lg: 18px;
+
+  --size-shell: 1500px;
+  /* Минимум левой колонки при открытой панели обзора (режим двух окон).
+     Его же читает peek.js — тянуть кромку дальше нельзя. */
+  --size-wrap-min: 650px;
+  /* +2 px под собственные границы плашек: контент ложится ровно на карточки */
+  --size-shell-bordered: 1502px;
+  --size-kit-rail: 220px;
+  /* Онбординг пробного года: ширина
+     плашки заданий и модалки этапа. */
+  --size-onb-tray: 380px;
+  --size-onb-dialog: 800px;       /* окно этапа: альбомный снимок широкой раскладки */
+  /* Брифинг 5Б: левая колонка листа (оглавление) и мера строки карточки. */
+  --size-onb-brief-rail: 420px;
+  --size-onb-brief-card: 820px;
+  --size-onb-team: 360px;         /* поле «Название команды» на карточке брифинга */
+  /* Рисочка на кромке панели обзора: толщина и длина. */
+  --size-grip-thickness: 4px;
+  --size-grip-length: 32px;
+
+  /* Длительность перехода состояний — Ant motionDurationMid (DESIGN.md):
+     боковая панель, состояния слайдера. */
+  --motion-duration-mid: .18s;
+
+}
+
+/* Дисплейный шрифт — бесплатный Oswald с Google Fonts (подключён в
+   kit.html), начертания 400 и 700, с кириллицей. В исходном продукте стоял
+   коммерческий Bebas Neue Pro; в публичный образец он не кладётся, Oswald —
+   ближайшая бесплатная замена по духу, не копия. */
+
+/* Двойники состояний [data-force] (ветка kit-shell, UI-KIT.md).
+   Каждое правило :hover / :focus / :focus-visible / :focus-within записано
+   как :is(псевдокласс, [data-force~="имя"]). Причина: страница кита
+   показывает матрицу состояний, а навести мышь на двенадцать экземпляров
+   разом нельзя — состояние должно включаться атрибутом. В продукте
+   data-force никто не ставит, поведение не меняется; специфичность у
+   атрибута и псевдокласса одинаковая, каскад тоже не меняется.
+   design-gate.sh проверяет, что двойник есть у каждого такого правила. */
+
+/* Тёмная тема — альтернативные значения компонентных токенов. Класс стоит
+   на тёмной поверхности (полоса экрана, блок итогов); всё, что внутри неё,
+   берёт тёмные значения само. Предупреждающего тона на тёмном в продукте
+   нет — у чипа warning тёмной альтернативы нет. */
+.theme-dark {
+  --color-text-tab: var(--color-text-inverse-secondary);
+  --color-text-tab-hover: var(--color-text-inverse);
+  --color-bg-tab-active: var(--color-bg-surface);
+  --color-text-tab-active: var(--color-text-primary);
+  --color-bg-veil: var(--color-bg-inverse-soft);
+  --color-border-veil: var(--color-border-inverse);
+  --color-bg-chip: var(--color-bg-inverse-soft);
+  --color-text-chip: var(--color-text-inverse-secondary);
+  --color-bg-chip-success: var(--color-bg-success-inverse);
+  --color-text-chip-success: var(--color-text-success-inverse);
+  --color-bg-chip-danger: var(--color-bg-danger-inverse);
+  --color-text-chip-danger: var(--color-text-danger-inverse);
+  --color-bg-help-tip: var(--color-bg-inverse-tertiary);
+  --color-bg-help-tip-hover: var(--color-bg-surface);
+  --color-text-help-tip: var(--color-text-strong);
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  font: 14px/1.45 var(--font-family-text);
+}
+
+.wrap { max-width: var(--size-shell); margin: 0 auto; padding: var(--space-4) var(--space-5) 80px; }
+
+h1 { font-size: 20px; margin: 0; }
+h2 { font-size: 17px; margin: 0 0 12px; }
+/* ЗАГОЛОВОК СЕКЦИИ — третий уровень заголовков (h1 плашка, h2 панель,
+   h3 секция, .sub подзаголовок). Он же разъехался на пять реализаций с
+   тремя разными трекингами: .04 у подкарточки, .05 у шапки таблицы, .08 у
+   остальных. Трекинг взят .08 — это значение токена Label в DESIGN.md.
+   Все пять теперь несут один набор свойств; собственным у каждой остаётся
+   только раскладка (отступ, флекс, зазор до значка). */
+h3,
+.subcard h3,
+.subcard-toggle,
+thead th,
+.bc-section-head,
+.fc-title {
+  font: 600 12px/15px var(--font-family-text);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--color-text-secondary);
+}
+h3 { margin: 0 0 var(--space-2); }
+
+/* ---------- top bar ---------- */
+
+.skip-link {
+  position: absolute; left: -9999px; top: 0;
+  background: var(--color-bg-accent); color: var(--color-text-on-accent);
+  padding: 8px 14px; border-radius: 0 0 var(--radius-xs) 0; z-index: 100;
+}
+.skip-link:is(:focus, [data-force~="focus"]) { left: 0; }
+
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-xs);
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  /* тени здесь нет: The Two Shadows Rule (DESIGN.md) знает ровно две — под
+     панелью решений и под всплывающим слоем. Верхняя плашка ниже по файлу
+     переписана редизайном на box-shadow: none, так что третья тень тут была
+     ещё и мёртвой. */
+}
+
+.topbar-main { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+
+
+.budget { min-width: 240px; flex: 1 1 240px; }
+.budget-row { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+.budget-row b { color: var(--color-text-primary); font-variant-numeric: tabular-nums; }
+.meter { height: 8px; background: var(--color-bg-track); border-radius: var(--radius-pill); overflow: hidden; }
+.meter > i { display: block; height: 100%; width: 0; background: var(--color-bg-accent); }
+.meter.over > i { background: var(--color-bg-danger-strong); }
+
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+
+.player-sticky {
+  position: sticky;
+  z-index: 15;
+  background: var(--color-bg-page);
+  padding-bottom: 2px;
+}
+/* Баннер устаревшего состояния. Рамку и подложку потерял: Bare Message Rule
+   требует голого текста, и этот баннер был единственным местом в системе,
+   где сообщение рисовалось коробкой. Долг по нему был записан в DESIGN.md
+   ещё до ветки atoms. Тон приходит классом, как у любого текста. */
+.stale-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  justify-content: space-between;
+  margin: var(--space-3) 0;
+  font: 400 14px/1.35 var(--font-family-text);
+}
+.stale-banner[hidden] { display: none; }
+/* ЧИП. Одна форма, три типа: default — пилюля с рамкой, borderless — без
+   рамки, colored — с заливкой по тону. До ветки atoms форм было шесть
+   (.user-chip, .badge, .year-pill, .cb-badge, .claim-chip плюс .rank-badge),
+   высот три (18, 22, 32) и два веса набора.
+
+   .user-chip при этом был объявлен дважды: нижнее объявление снимало у него
+   рамку и фон, то есть он уже был borderless — но узнать это можно было
+   только сложив два правила из разных концов файла.
+
+   Заливка colored приходит из общего словаря тона (.tone-*), а не из
+   собственных модификаторов: тон у текста и тон у чипа — одно и то же. */
+.chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: var(--size-control-xs);
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--color-text-chip);
+  font: 600 12px/1 var(--font-family-text); font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+/* Два типа, и у обоих есть тон. Разница в том, чем тон красит: у default
+   — рамку и текст, у borderless — заливку. Без рамки чип без заливки
+   перестаёт читаться как чип и становится просто текстом. Текст на
+   красной и жёлтой заливке — Ink: текст ошибки на подложке ошибки
+   (text-danger на bg-danger) даёт контраст 1,87 и цифру не видно. */
+.chip.tone-danger { border-color: var(--color-status-danger); }
+.chip.tone-warning { border-color: var(--color-status-warning-line); }
+.chip.tone-success { border-color: var(--color-status-success); }
+
+.chip.borderless { border-color: transparent; background: var(--color-bg-chip); }
+.chip.borderless.tone-danger { background: var(--color-bg-chip-danger); color: var(--color-text-chip-danger); }
+.chip.borderless.tone-warning { background: var(--color-bg-chip-warning); color: var(--color-text-chip-warning); }
+.chip.borderless.tone-success { background: var(--color-bg-chip-success); color: var(--color-text-chip-success); }
+/* Нажимаемый чип (<button>) под курсором бледнеет целиком: у default —
+   рамка и текст, у borderless — заливка и текст. Тон не перекрашивается:
+   он несёт смысл, наведение его только приглушает. Метка (<span>) не
+   нажимается, и наведения у неё нет. */
+button.chip { cursor: pointer; }
+button.chip:is(:hover, [data-force~="hover"]):not(:disabled) { opacity: .7; }
+
+
+/* ---------- login ---------- */
+
+.center-card { display: flex; justify-content: center; padding-top: 48px; }
+.login { width: 360px; }
+.login h2 { margin-bottom: 4px; }
+.login .sub { margin: 0 0 16px; }
+
+/* ---------- buttons ---------- */
+
+/* Кнопок три: обычная (.primary), вторичная (голый button) и текстовая
+   (.word-btn). До ветки atoms форм было семь: .ghost отличался от базовой
+   только прозрачным фоном, которого на белом не видно; .stale-banner-btn
+   был прямым дублем базовой; .cb-run — вторым претендентом на роль главной.
+
+   Размер — отдельная ось, общая у обычной и вторичной: default 40 px и
+   small 32 px (.small). Числа не выдуманы: 40 — высота поля и селекта
+   (DESIGN.md → Ant → controlHeight), 32 — высота иконочной кнопки, таба и
+   чипа. Прежние 38 и 30 не лежали ни на чём.
+
+   У любой из трёх может быть иконка в начале — слот один и тот же, глиф 16
+   из icons.js. Спиннер загрузки встаёт НА МЕСТО иконки (см. .busy ниже). */
+button {
+  font: 500 14px/1 var(--font-family-text);
+  height: var(--size-control);
+  padding: 0 var(--space-4);
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--space-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-data);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  /* Высота фиксирована, значит переносить текст нельзя: состояние «занято»
+     добавляет спиннер 12 px с зазором, и без nowrap надпись ломается на две
+     строки и вылезает за габарит. */
+  white-space: nowrap;
+}
+button > svg { display: block; flex: none; }
+/* Вторичная под курсором темнеет подложкой — Ash, как поле ввода. Оранжевого
+   в наведении нет ни у одной кнопки: Ember — это фокус и primary. Специфичность
+   нарочно нулевая: любое правило с классом (.primary, .tab, .word-btn, .chip,
+   .toast button, иконочная кнопка) держит свою подложку и сюда не попадает. */
+button:where(:hover, [data-force~="hover"]):where(:not(:disabled)) { background-color: var(--color-bg-card); }
+button:disabled { opacity: .45; cursor: not-allowed; }
+
+/* Маленький размер. Там, где кнопка стоит внутри плотной строки: действия
+   в админских таблицах, чип команды в шапке, раскрытие рычага. */
+button.small { height: var(--size-control-sm); padding: 0 var(--space-3); font-size: 12px; }
+
+/* Обычная. Одна на экран. Рамки нет: вокруг оранжевой заливки она не несёт
+   информации. Заблокированная не гасится прозрачностью — .45 на оранжевом
+   даёт грязный розовый, поэтому заливка уходит в Ash, текст в Slate. */
+button.primary {
+  border: 0;
+  background: var(--color-bg-accent); color: var(--color-text-on-accent);
+  font-weight: 600;
+}
+/* Под курсором заливка темнеет. Рамки у обычной нет, поэтому
+   общее для кнопок наведение рамкой Ember ей ничего не даёт. */
+button.primary:is(:hover, [data-force~="hover"]):not(:disabled) { background: var(--color-bg-accent-hover); }
+button.primary:disabled { opacity: 1; background: var(--color-bg-card); color: var(--color-text-tertiary); }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+
+/* ---------- fields ---------- */
+
+/* Поле ввода. Одна форма на три прежние: простое поле формы (label.field),
+   поле со слайдером (.sfield) и селект сегмента (.seg-select). Они
+   расходились по всему: высота 34 против 40, подложка Panel-2 против белой,
+   рамка Line против Control-border, фокус оранжевым кольцом против рамки
+   Ink. Канон — белая подложка, рамка Control-border, высота control,
+   фокус рамкой Ink: так записано в DESIGN.md и так вели себя две формы
+   из трёх.
+
+   Общее объявлено один раз на все четыре селектора; ниже у каждого
+   остаётся только то, чем он от остальных отличается. */
+label.field input,
+label.field select,
+.sfield,
+.bc2 .seg-select {
+  height: var(--size-control);
+  border: 1px solid var(--color-border-control);
+  border-radius: var(--radius-xs);
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  box-sizing: border-box;
+}
+label.field input:is(:hover, [data-force~="hover"]):not(:disabled, :focus),
+label.field select:is(:hover, [data-force~="hover"]):not(:disabled, :focus),
+.sfield:is(:hover, [data-force~="hover"]):not(:focus-within, :has(.sf-value:disabled), :has(.sf-range:is(:hover, [data-force~="hover"]))),
+.bc2 .seg-select:is(:hover, [data-force~="hover"]):not(:disabled, :focus) {
+  /* только цвет: у селекта стрелка нарисована фоновой картинкой */
+  background-color: var(--color-bg-card);
+}
+/* Отключённое поле: рамка бледнеет, текст уходит в Slate, курсор запрещён.
+   Одно правило на все формы — есть в поле дорожка или нет, не важно. */
+label.field input:disabled,
+label.field select:disabled,
+.bc2 .seg-select:disabled,
+.sfield:has(.sf-value:disabled) {
+  border-color: var(--color-border-default);
+  color: var(--color-text-tertiary);
+  cursor: not-allowed;
+}
+label.field input:is(:focus, [data-force~="focus"]),
+label.field select:is(:focus, [data-force~="focus"]),
+.sfield:is(:focus-within, [data-force~="focus"]),
+.bc2 .seg-select:is(:focus, [data-force~="focus"]) {
+  outline: none;
+  border-color: var(--color-action);
+}
+
+label.field { display: flex; flex-direction: column; gap: var(--space-1); font-size: 12px; color: var(--color-text-secondary); min-width: 0; margin-bottom: 10px; }
+label.field input, label.field select {
+  font: 400 14px/1 var(--font-family-text); font-variant-numeric: tabular-nums;
+  padding: 0 var(--space-3);
+  min-width: 0;
+  width: 100%;
+}
+
+/* ---------- panels ---------- */
+
+.panel {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-xs);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; margin-bottom: 16px; }
+
+.brand-card { background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-xs); }
+.brand-card > header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border-default);
+  background: var(--color-bg-data);
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+}
+.brand-card > header .name { font-weight: 600; }
+.brand-card > header .id { font: 12px var(--font-family-text); color: var(--color-text-secondary); }
+.brand-card > header .spend { margin-left: auto; font: 12px var(--font-family-text); font-variant-numeric: tabular-nums; color: var(--color-text-secondary); }
+.brand-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; border-radius: 0 0 var(--radius-xs) var(--radius-xs); }
+
+.subcard {
+  display: flex; flex-direction: column; gap: 10px;
+  background: var(--color-bg-data);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-xs);
+  padding: 12px;
+}
+.subcard h3 { margin: 0; }
+.subcard-toggle {
+  display: flex; align-items: center; gap: var(--space-2);
+  cursor: pointer;
+}
+.subcard-toggle input { margin: 0; flex: none; }
+/* Знак подсказки — залитый круг, в нём «?» Rubik Regular цветом подложки:
+   Slate с белым знаком, при наведении и фокусе — Ember. Размер задаёт
+   параметр helpTip({ size }): sm — у подписей и шапок таблиц, lg — у
+   заголовков. Капитель и трекинг шапки таблицы на знак не переходят. */
+/* padding-top опускает глиф к центру круга: при line-height 1 «?» Rubik
+   стоит выше центра, и пустой низ круга читался отступом. Сдвиг замерен по
+   границам глифа: 1px у sm, 0.5px у lg — зазоры сверху и снизу сходятся до
+   0,1 px. border-box — чтобы круг от этого не рос. */
+.help-tip {
+  display: inline-flex; align-items: center; justify-content: center;
+  box-sizing: border-box; padding-top: 1px;
+  width: var(--size-help-sm); height: var(--size-help-sm);
+  margin-left: var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-help-tip);
+  font: 400 10px/1 var(--font-family-text);
+  text-transform: none; letter-spacing: 0;
+  color: var(--color-text-help-tip);
+  cursor: help; vertical-align: middle; user-select: none;
+  flex: none;
+}
+.help-tip.lg { width: var(--size-help-lg); height: var(--size-help-lg); padding-top: 0.5px; margin-left: var(--space-2); font-size: 12px; }
+.subcard-toggle .help-tip { margin-left: 0; }
+.help-tip:is(:hover, [data-force~="hover"]) { background: var(--color-bg-help-tip-hover); }
+.help-tip:is(:focus, [data-force~="focus"]) { background: var(--color-bg-accent); color: var(--color-text-on-accent); }
+.help-tip-pop {
+  position: fixed; z-index: 9999;
+  max-width: 300px;
+  padding: 7px 11px; border-radius: var(--radius-xs);
+  background: var(--color-bg-tooltip); color: var(--color-text-inverse);
+  font-size: 12px; font-weight: 500; line-height: 1.45;
+  text-align: left; letter-spacing: normal; text-transform: none;
+  box-shadow: var(--shadow-overlay);
+  pointer-events: none;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+.help-tip-pop[hidden] { display: none; }
+.subcard-body { display: flex; flex-direction: column; gap: 10px; }
+.subcard-body .hint { color: var(--color-text-secondary); }
+
+.price-input { font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.row.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+.attrs { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+.attrs .perceived { display: block; margin-top: 2px; }
+.split { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+
+.sub { font-size: 12px; color: var(--color-text-secondary); }
+.sub b { color: var(--color-text-primary); font-variant-numeric: tabular-nums; font-weight: 600; }
+
+/* ---------- channel sliders ---------- */
+
+.ch-list { display: flex; flex-direction: column; gap: 10px; }
+.ch-row { display: flex; flex-direction: column; gap: 3px; }
+.ch-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--color-text-secondary); }
+.ch-values { font-variant-numeric: tabular-nums; font-size: 12px; color: var(--color-text-primary); white-space: nowrap; }
+.ch-values .ch-pct { font-weight: 600; }
+.ch-values .ch-rub { color: var(--color-text-secondary); font-weight: 400; }
+.ch-slider { position: relative; height: 20px; display: flex; align-items: center; }
+.ch-slider input[type="range"] { width: 100%; }
+.ch-marker {
+  position: absolute; top: 3px; bottom: 3px; width: 2px;
+  background: var(--color-bg-accent); border-radius: var(--radius-pill); pointer-events: none; opacity: .65;
+}
+
+/* ---------- claims ---------- */
+
+.claim { display: flex; gap: 8px; align-items: flex-start; font-size: 12px; padding: 5px 7px; border-radius: var(--radius-xs); cursor: pointer; }
+.claim:is(:hover, [data-force~="hover"]):not(:has(input:disabled)) { background: var(--color-bg-data); }
+.claim input { margin: 3px 0 0; flex: none; }
+.claim.disabled { opacity: .4; cursor: not-allowed; }
+.claim:has(input:disabled) { color: var(--color-text-tertiary); cursor: not-allowed; }
+
+/* ---------- issues ---------- */
+
+/* Bare Message Rule (DESIGN.md): ошибка — только текст, без рамки и подложки.
+   Диалог названия команды (app.js) и #loginError — единственные два живых
+   места (инлайн-валидация полей экрана решений уже голый текст, класс
+   .issue-msg ниже по файлу, этот класс её не затрагивает). */
+/* ТОН ТЕКСТА. Компонента «сообщение» в системе нет: есть текст, который
+   может нести тон. До ветки atoms один и тот же тон записывался семью
+   способами — .issue.error, .field-msg, .confirm-err, .issue-msg, .neg,
+   .delta.down и статус старого тура онбординга — и добавить восьмой было проще,
+   чем найти нужный из семи.
+
+   Тон не несёт ни кегля, ни отступа: кегль берётся из шкалы набора,
+   отступ принадлежит молекуле, в которую текст вставлен. */
+.tone-danger { color: var(--color-text-danger); }
+.tone-warning { color: var(--color-text-warning); }
+.tone-success { color: var(--color-text-success); }
+.tone-muted { color: var(--color-text-tertiary); }
+
+/* Строка списка проверки: кегль и отступ — её собственные, тон приходит
+   классом .tone-*. */
+.issue { font: 400 12px/1.35 var(--font-family-text); margin: var(--space-2) 0; }
+.issue .path { font: 12px var(--font-family-text); opacity: .7; display: block; margin-top: 2px; }
+
+/* ---------- tables ---------- */
+
+/* Прокрутка у таблицы только вбок. Одно overflow-x: auto делает
+   прокручиваемой и вертикаль: при классических полосах прокрутки дробная
+   высота таблицы давала лишний вертикальный скролл. */
+.tablewrap { overflow-x: auto; overflow-y: hidden; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { padding: var(--space-2) 10px; text-align: right; border-bottom: 1px solid var(--color-border-default); white-space: nowrap; }
+th:first-child, td:first-child, th:not(.num), td:not(.num) { text-align: left; }
+/* .player обычно метит строку (текущая компания в «Показателях»); в дрейфе
+   идеалов на «Рынке» тот же класс метит ячейку — там подсвечивается
+   колонка текущего года, а не строка, — поэтому селектор расширен на td. */
+tbody tr.player, td.player { background: color-mix(in srgb, var(--color-bg-accent) 8%, transparent); }
+td.num, th.num { font-variant-numeric: tabular-nums; }
+
+/* ---------- stats ---------- */
+
+tr.player td, td.player { font-weight: 600; color: var(--color-text-primary); }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+
+/* ---------- карточка «Гипотеза долей» (§5) ---------- */
+/* Три колонки по сегментам в ряд, под карточками брендов. Колонки без
+   собственной поверхности и обводки — их разделяет вертикальная линия
+   Line-soft: делится каждый сегмент по отдельности, и остаток рынка
+   принадлежит колонке, а не строке общей таблицы.
+
+   Всё внутри колонки — компоненты системы, своего здесь только раскладка:
+   поле процента — поле со слайдером карточки бренда (sliderField) в строке
+   бренда, ошибка сегмента — тон текста, полоса распределения — атом «Шкала»
+   с заливкой на каждый бренд. Строки брендов идут столбцом: имя слева, поля
+   одной колонкой справа, между строками линия Line-soft. Заливки идут
+   ахроматической лестницей strong → secondary → tertiary: это порядок
+   брендов внутри колонки, а не категориальная палитра, и цвет здесь значения
+   не несёт. Незанятый хвост дорожки и есть «конкуренты и не купившие». */
+
+/* Подложка карточки — радиус крупнее обычной панели (--radius-lg, как у
+   полосы управления и панели карточки бренда). */
+.panel.hyp { border-radius: var(--radius-lg); padding: var(--space-card); }
+.hyp-panel-head { display: flex; align-items: center; gap: var(--space-3); }
+/* подзаголовок вплотную к заголовку — это одна шапка */
+.hyp .sub { margin: var(--space-1) 0 0; }
+/* заголовок карточки — Heading 3 шкалы набора (29 / 1.2) */
+.hyp-panel-head h2 { flex: 1 1 auto; margin: 0; font: 500 29px/1.2 var(--font-family-text); }
+/* поле вокруг сетки, а не внутри колонок: содержимое не прилипает ни к
+   пояснению, ни к нижнему краю карточки, а линия между колонками остаётся
+   ровно по высоте содержимого */
+/* Три сегмента держатся в один ряд до последнего: колонка сужается до
+   половины поля (--size-field / 2), и только уже этого сетка переносит
+   ряд — две + одна или столбец. Когда имя бренда и поле рядом не
+   влезают, подпись встаёт над полем (контейнерный запрос ниже), а не
+   переносится сегмент. Поля колонок — зазор сетки 40 px (два --space-5),
+   а не padding блока: padding оставался у второго и третьего сегмента и
+   при переносе, и они съезжали вправо и вплотную друг к другу. */
+.hyp-blocks {
+  display: grid; margin: var(--space-5) 0 var(--space-2);
+  grid-template-columns: repeat(auto-fit, minmax(calc(var(--size-field) / 2), 1fr));
+  gap: calc(2 * var(--space-5));
+  /* срезает линии, которым некого отделять: слева у первой колонки,
+     сверху у первого ряда */
+  overflow: hidden;
+}
+.hyp-block {
+  position: relative;
+  display: flex; flex-direction: column; gap: var(--space-3);
+  container: hyp-seg / inline-size;
+}
+/* Разделители — посередине зазора: вертикальный слева от блока,
+   горизонтальный над ним (с заходом в зазор колонок, чтобы ряд линий был
+   сплошным). */
+.hyp-block::before, .hyp-block::after {
+  content: ""; position: absolute;
+  background: var(--color-border-soft);
+}
+.hyp-block::before { top: 0; bottom: 0; left: calc(-1 * var(--space-5)); width: 1px; }
+.hyp-block::after { top: calc(-1 * var(--space-5)); left: calc(-2 * var(--space-5)); right: 0; height: 1px; }
+.hyp-seg { font: 600 14px/19px var(--font-family-text); }
+.hyp-cell {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+  padding: var(--space-2) 0;
+  box-shadow: inset 0 -1px 0 var(--color-border-soft);
+}
+.hyp-brand { color: var(--color-text-secondary); }
+.hyp-cell .sfield { flex: none; width: var(--size-field); }
+/* Узкая колонка (режим двух окон): имя бренда и поле рядом не влезают —
+   320 px это самое длинное имя (~91 px), зазор --space-3 и поле
+   --size-field с запасом. Подписи встают над значением, как подпись поля
+   в карточке бренда, поле тянется на колонку, но не шире обычного; строки
+   идут без линий, с шагом --space-3. */
+@container hyp-seg (max-width: 319px) {
+  .hyp-cells { display: flex; flex-direction: column; gap: var(--space-3); }
+  .hyp-cell { flex-direction: column; align-items: stretch; gap: var(--space-1); padding: 0; box-shadow: none; }
+  .hyp-cell .sfield { width: 100%; max-width: var(--size-field); }
+  .hyp-brand, .hyp-rest-k { font: 400 12px/1.4 var(--font-family-text); color: var(--color-text-tertiary); }
+  .hyp-rest { flex-direction: column; align-items: flex-start; gap: var(--space-1); }
+}
+.hyp-msg { font: 400 12px/1.35 var(--font-family-text); }
+.hyp-rest {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3);
+  color: var(--color-text-tertiary);
+}
+.hyp-rest-v { font-weight: 600; font-variant-numeric: tabular-nums; }
+.hyp-split > i:nth-child(1) { background: var(--color-bg-strong); }
+.hyp-split > i:nth-child(2) { background: var(--color-bg-secondary); }
+.hyp-split > i:nth-child(3) { background: var(--color-bg-tertiary); }
+
+/* Карточка «Прогноз» (версия new): две части столбцом — гипотезы, под ними
+   прогнозный P&L за единицу во всю ширину. Между частями тот же зазор и та
+   же линия посередине, что между рядами сегментов. Отступы сетки сегментов
+   здесь несёт .hyp-body, у самой сетки их нет. */
+.hyp-body {
+  display: flex; flex-direction: column; gap: calc(2 * var(--space-5));
+  margin: var(--space-5) 0 var(--space-2);
+}
+.hyp-part { min-width: 0; }
+.hyp-body .hyp-blocks { margin: 0; }
+.hyp-pnl { position: relative; }
+.hyp-pnl::before {
+  content: ""; position: absolute; left: 0; right: 0; top: calc(-1 * var(--space-5)); height: 1px;
+  background: var(--color-border-soft);
+}
+/* доли не распределены — строка Body в Steel вместо таблицы */
+.hyp-pnl-empty { margin: 0; font: 400 14px/19px var(--font-family-text); color: var(--color-text-secondary); }
+/* Поверхность плитки объявлена один раз на обе: плитка показателя и
+   плитка идеала различались только именем — фон, рамка, радиус и поле у них
+   совпадали побайтово. Содержимое у них разное, поэтому классы остаются
+   два, а общего у них ровно одно объявление. */
+.stat, .ideal-tile {
+  background: var(--color-bg-data);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) 14px;
+}
+.stat { display: flex; flex-direction: column; }
+.stat .k { font: 400 12px/16px var(--font-family-text); text-transform: none; letter-spacing: 0; color: var(--color-text-tertiary); }
+.stat .v { font: 600 17px/22px var(--font-family-text); font-variant-numeric: tabular-nums; margin-top: auto; padding-top: 6px; }
+/* 16. пояснительные значения набираются как обычный текст, а не как число */
+.stat .v.text { font: 400 12px/16px var(--font-family-text); color: var(--color-text-secondary); }
+
+/* ---------- charts ---------- */
+
+.chartbox { position: relative; height: 260px; }
+
+/* радар: одна крупная диаграмма на семь осей — вместо трёх
+   маленьких «наш против каждого конкурента» */
+/* пропорцию задаёт radar.js — по холсту, обрезанному впритык к подписям осей.
+   Диаграмма стоит под выбором во всю ширину карточки:
+   до 1120 px вместо прежних 720 — подписи осей растут вместе с холстом. */
+.radar-wrap { position: relative; width: 100%; max-width: 1120px; height: auto; margin: 0 auto; }
+
+/* Карточка радара. Сверху заголовок. Ниже подложка: слева выбор — три группы
+   («Свои бренды», «Конкуренты», «Предпочтения сегментов») одним столбцом,
+   пункт в строке; вертикальная линия; справа переключатель режима и
+   диаграмма. Выбор стоит при диаграмме, как легенда при графике. */
+.radar-card { container: radar / inline-size; }
+.radar-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-5); margin-bottom: var(--space-5); }
+/* Подложка — как у карточки бренда: Ash со скруглением. Сверху и снизу
+   40 px до подписей осей (холст обрезан по ним), слева 40 до выбора, справа
+   20. Между выбором, линией и диаграммой — по 48 px (два --space-6). */
+.radar-chart {
+  display: grid; grid-template-columns: max-content 1px minmax(0, 1fr); gap: 0 calc(2 * var(--space-6)); align-items: start;
+  background: var(--color-bg-card); border-radius: var(--radius-lg);
+  padding: calc(2 * var(--space-5)) var(--space-5) calc(2 * var(--space-5)) calc(2 * var(--space-5));
+}
+.radar-rule { align-self: stretch; background: var(--color-border-default); }
+/* группы друг под другом через горизонтальную линию */
+.radar-groups { display: grid; grid-template-columns: max-content; gap: var(--space-5) 0; }
+.radar-divider { height: 1px; background: var(--color-border-default); }
+.radar-group h3 { margin: 0 0 var(--space-1); }
+.radar-row { display: grid; }
+/* Переключатель режима — капсула табов по центру над
+   диаграммой: меняет картинку, а не выбор. Селектор составной: .tabs ниже
+   по файлу обнуляет margin. */
+.radar-chart .radar-modes { width: max-content; margin: 0 auto var(--space-5); }
+/* Порог 1100: уже диаграмма справа от выбора мельчает до нечитаемых
+   подписей осей. Тогда выбор встаёт над ней полосой — три группы
+   колонками через вертикальные линии, по 48 px от текста, — а линия между
+   выбором и диаграммой ложится горизонтально. */
+@container radar (max-width: 1099px) {
+  .radar-chart { grid-template-columns: minmax(0, 1fr); gap: var(--space-5) 0; padding-left: var(--space-5); }
+  .radar-rule { height: 1px; }
+  .radar-groups { grid-template-columns: max-content calc(4 * var(--space-6)) max-content calc(4 * var(--space-6)) max-content; gap: 0; }
+  .radar-divider { justify-self: center; width: 1px; height: auto; }
+}
+/* Совсем узко (панель у минимума): от текста до линии по 24 px, иначе
+   предпочтения выходят за край подложки. */
+@container radar (max-width: 719px) {
+  .radar-groups { grid-template-columns: max-content calc(2 * var(--space-6)) max-content calc(2 * var(--space-6)) max-content; }
+}
+
+/* Пункт легенды: квадрат цвета и имя. Чекбокс в разметке есть (клавиатура,
+   чтение с экрана), но спрятан — фокус рисуется кольцом на квадрате. */
+.radar-toggle { position: relative; display: flex; align-items: center; gap: var(--space-2); padding: var(--space-1) 0; font: 400 14px/1.45 var(--font-family-text); color: var(--color-text-primary); cursor: pointer; }
+.radar-toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
+.radar-toggle input:is(:focus-visible, [data-force~="focus"]) + .radar-swatch { outline: 2px solid var(--color-action); outline-offset: 2px; }
+
+/* Квадрат (radar.js → legendSwatch): выключен — серый, включён — цвет
+   объекта из --swatch. Радиус 3 — тот же, что у
+   квадрата в SVG, иначе кольцо наведения не совпадёт с его углами. */
+.radar-swatch { display: inline-flex; flex: none; border-radius: 3px; transition: box-shadow .12s ease; }
+.radar-swatch rect { fill: var(--color-border-control); transition: fill .12s ease, fill-opacity .12s ease, stroke .12s ease, opacity .12s ease; }
+.radar-swatch[data-on] rect { fill: var(--swatch); }
+/* Идеал — радиокнопка: пунктирная рамка, у
+   включённого она цвета сегмента и толще, внутри цветной квадрат; подпись
+   включённого — полужирная. */
+.radar-swatch[data-kind="ideal"] .radar-swatch-frame { fill: none; stroke: var(--color-border-control); stroke-width: 1.5; stroke-dasharray: 3 2; }
+.radar-swatch[data-kind="ideal"] .radar-swatch-dot { fill: var(--swatch); opacity: 0; }
+.radar-swatch[data-kind="ideal"][data-on] .radar-swatch-frame { stroke: var(--swatch); stroke-width: 2; }
+.radar-swatch[data-kind="ideal"][data-on] .radar-swatch-dot { opacity: 1; }
+.radar-group-ideals .radar-toggle:has(input:checked) > span:last-child { font-weight: 500; }
+/* наведение: вокруг квадрата кольцо, у выключенного проступает его цвет */
+.radar-toggle:is(:hover, [data-force~="hover"]):not(:has(input:disabled)) .radar-swatch { box-shadow: 0 0 0 3px var(--color-border-soft); }
+.radar-toggle:is(:hover, [data-force~="hover"]):not(:has(input:disabled)) .radar-swatch:not([data-on]) rect { fill: var(--swatch); fill-opacity: .35; }
+.radar-toggle:is(:hover, [data-force~="hover"]):not(:has(input:disabled)) .radar-swatch[data-kind="ideal"]:not([data-on]) .radar-swatch-frame { fill: none; stroke: var(--swatch); stroke-opacity: .5; }
+
+.radar-toggle:has(input:disabled) { opacity: .45; cursor: not-allowed; }
+
+/* Наведение на ось: клин вокруг
+   луча — невидимая зона наведения; луч темнеет до Ink, подпись — полужирная,
+   на каждой включённой фигуре точка её цвета: бренд — заливка, идеал —
+   кольцо. */
+.radar-ray { stroke: var(--color-border-default); stroke-width: 1; }
+.radar-ray.is-hot { stroke: var(--color-text-primary); stroke-width: 1.5; }
+.radar-wrap text.is-hot { font-weight: 600; }
+.radar-zone { fill: transparent; cursor: crosshair; }
+.radar-marks { pointer-events: none; }
+.radar-mark { fill: var(--swatch); stroke: var(--color-bg-surface); stroke-width: 1.5; }
+.radar-mark[data-kind="ideal"] { fill: var(--color-bg-surface); stroke: var(--swatch); stroke-width: 2; }
+
+/* Тултип оси — та же тёмная плашка, что у подсказки (.help-tip-pop):
+   все включённые объекты на оси, от края к центру. */
+.radar-tip {
+  position: absolute; z-index: 1; pointer-events: none;
+  padding: var(--space-2) var(--space-3); border-radius: var(--radius-xs);
+  background: var(--color-bg-tooltip); color: var(--color-text-inverse);
+  box-shadow: var(--shadow-overlay);
+  font: 500 12px/1.45 var(--font-family-text);
+  white-space: nowrap;
+}
+.radar-tip[hidden] { display: none; }
+.radar-tip-head { font-weight: 600; margin-bottom: var(--space-1); }
+/* между строками 8 px (два поля по --space-1): вплотную строки сливались */
+.radar-tip-row { display: grid; grid-template-columns: var(--space-3) minmax(0, 1fr) auto; align-items: center; gap: var(--space-2); padding: var(--space-1) 0; }
+.radar-tip-swatch { width: var(--space-3); height: var(--space-3); border-radius: 3px; background: var(--swatch); }
+/* идеал — как его переключатель во включённом виде: пунктирная рамка и
+   внутри квадрат того же цвета */
+.radar-tip-swatch[data-kind="ideal"] { box-sizing: border-box; padding: 2px; border: 1.5px dashed var(--swatch); background-clip: content-box; }
+.radar-tip-kind { font-weight: 400; color: var(--color-text-inverse-tertiary); }
+.radar-tip-value { padding-left: var(--space-3); font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+.radar-tip-note { margin-top: var(--space-1); font-weight: 400; color: var(--color-text-inverse-tertiary); }
+
+/* Плашка диаграммы: «Бюджеты брендов» и «Динамика по
+   годам» под таблицей «Бренды рынка». Подложка и сетка — радара
+   (.radar-chart): выбор брендов | линия | диаграмма. Первая строка сетки
+: заголовок над выбором брендов и табы над
+   диаграммой — центры по вертикали совпадают, капсула табов по центру
+   колонки диаграммы. Сверху --space-5, от строки заголовка до «Свои
+   бренды» --space-6. От таблицы до первой плашки --space-7, между
+   плашками --space-5. */
+/* Карточка с плашками — контейнер «radar»: в узкой карточке (панель
+   обзора наполовину) плашки перестраиваются по тем же порогам, что радар,
+   — выбор брендов полосой над диаграммой. */
+.chart-host { container: radar / inline-size; }
+.chart-plate { margin-top: var(--space-5); padding-top: var(--space-5); }
+.tablewrap + .chart-plate { margin-top: var(--space-7); }
+/* заголовок — на колонки выбора и линии: так он не раздвигает колонку
+   выбора, а ширины ему хватает с запасом промежутка сетки. Селектор
+   составной: .ref-h3 ниже по файлу задаёт свой margin. */
+.chart-plate .chart-plate-title { grid-column: 1 / 3; align-self: center; margin: 0 0 var(--space-6); }
+.chart-right { min-width: 0; }
+
+/* Строка табов — колонка диаграммы во всю ширину (её и меряет скрипт),
+   капсула .tabs — по центру, в одну строку. Что не влезло — в меню таба
+   «⋯» (charts.js → modeTabs). Таб не сжимается: ширину строки считает
+   скрипт. Поле снизу то же, что у заголовка, — центры по вертикали
+   совпадают. */
+.chart-modes {
+  grid-column: 3; align-self: center; min-width: 0; margin-bottom: var(--space-6);
+  position: relative; display: flex; justify-content: center;
+}
+.chart-plate .radar-modes { flex-wrap: nowrap; width: max-content; max-width: 100%; margin: 0; }
+.chart-modes .tab { flex: none; }
+.chart-modes .tab[hidden] { display: none; }
+/* «⋯» — таб с иконкой 16 (Bold) вместо подписи */
+.chart-more { padding: 0 var(--space-2); }
+/* Меню «⋯»: всплывающий слой под табом, пункты — те же табы столбцом. */
+.chart-more-menu {
+  position: absolute; top: calc(100% + var(--space-1)); z-index: 2;
+  display: flex; flex-direction: column; align-items: stretch; gap: var(--space-1);
+  padding: var(--space-2);
+  background: var(--color-bg-surface); border-radius: var(--radius-md); box-shadow: var(--shadow-overlay);
+}
+.chart-more-menu[hidden] { display: none; }
+/* Узкая плашка: сверху вниз
+   заголовок, выбор брендов, линия, таб, диаграмма — таб вплотную к своей
+   диаграмме. Разметка одна на обе ширины, порядок задаёт order. Табы по
+   центру ширины диаграммы. Промежутки — шаг сетки радара (--space-5). */
+@container radar (max-width: 1099px) {
+  .chart-plate .chart-plate-title, .chart-modes { grid-column: 1 / -1; margin-bottom: 0; }
+  .chart-plate > .radar-groups { order: 1; }
+  .chart-plate > .radar-rule { order: 2; }
+  .chart-plate > .chart-modes { order: 3; }
+  .chart-plate > .chart-right { order: 4; }
+  /* Выбор брендов на всю строку: свои — первой колонкой, конкуренты —
+     колонками сверху вниз по столько строк, сколько своих брендов
+     (--chart-rows ставит charts.js), колонки тянутся на остаток ширины.
+     Карточку радара это не задевает — только .chart-plate. */
+  .chart-plate > .radar-groups { grid-template-columns: max-content calc(4 * var(--space-6)) minmax(0, 1fr); }
+  .chart-plate .chart-rivals .radar-row {
+    grid-template-rows: repeat(var(--chart-rows), auto); grid-auto-flow: column;
+    grid-auto-columns: minmax(max-content, 1fr); column-gap: var(--space-5);
+  }
+}
+/* совсем узко — от текста до линии по 24 px, как у радара */
+@container radar (max-width: 719px) {
+  .chart-plate > .radar-groups { grid-template-columns: max-content calc(2 * var(--space-6)) minmax(0, 1fr); }
+}
+.chart-more-menu .tab { justify-content: flex-start; }
+.chart-empty { color: var(--color-text-secondary); padding: var(--space-6) 0; }
+
+/* диаграмма лежит прямо на сером, своей белой подложки нет */
+.chart-line { position: relative; }
+/* подсказка у правого края плашки не сжимается по остатку ширины: иначе
+   сумма налезала на подпись строки («Каналы продаж370M ₽») */
+.chart-line .radar-tip { width: max-content; }
+.chart-line-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart-grid { stroke: var(--color-border-default); stroke-width: 1; }
+.chart-axis { font: 400 12px var(--font-family-text); fill: var(--color-text-secondary); }
+/* сумма за полосой, год полосы «Рынок», имя своего бренда — полужирные */
+.chart-axis:is(.is-cur, .is-own) { fill: var(--color-text-primary); font-weight: 600; }
+.chart-guide { stroke: var(--color-text-primary); stroke-width: 1; opacity: 0; }
+.chart-guide.is-on { opacity: 1; }
+.chart-ln { fill: none; stroke: var(--swatch); stroke-width: 2; stroke-linejoin: round; }
+.chart-pt { fill: var(--swatch); stroke: var(--color-bg-card); stroke-width: 1.5; }
+.chart-zone { fill: transparent; cursor: crosshair; }
+.chart-part-rect { stroke: var(--color-bg-card); stroke-width: 1; }
+/* наведение на строку бренда: полосы остальных приглушаются */
+.chart-bar { transition: opacity .12s ease; }
+.chart-line-svg:has(.chart-row.is-hot) .chart-row:not(.is-hot) .chart-bar { opacity: .45; }
+
+/* легенда частей полосы — под диаграммой, по центру */
+.chart-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-1) var(--space-5); margin-top: var(--space-4); font: 400 14px/1.45 var(--font-family-text); color: var(--color-text-primary); }
+.chart-legend-item { display: inline-flex; align-items: center; gap: var(--space-2); }
+/* квадрат — как у переключателя радара: 12 px (--space-3), радиус 3 */
+.chart-legend-item > i { display: inline-block; width: var(--space-3); height: var(--space-3); border-radius: 3px; }
+
+/* ---------- переключатель годов ---------- */
+
+/* Переключатель годов — тот же компонент «Таб» (DESIGN.md → Components), что
+   и «Ваши годы / Все игры» рядом: заливка Ash у активного, текст Steel у
+   остальных. Оранжевой заливки здесь нет — «таб никогда не оранжевый: это
+   навигация, а не действие» (The One Ember Rule); класс .timeline со своей
+   второй копией правила активного таба снят целиком. */
+/* Переключатель годов не держит своей реализации: в разметке он получает
+   класс .tabs, здесь остаётся только то, чем он отличается от вкладок
+   шапки, — он не капсула и стоит в потоке.
+
+   Селектор составной, а не одиночный, и это важно: у .year-tabs и .tabs
+   специфичность одинаковая, а блок .tabs лежит ниже по файлу — при
+   одиночном классе капсула возвращалась назад. */
+.tabs.year-tabs { padding: 0; background: none; border: 0; margin-bottom: var(--space-4); }
+
+/* ---------- tables: deltas, sticky, zebra ---------- */
+
+.delta { font: 600 12px var(--font-family-text); font-variant-numeric: tabular-nums; display: inline-block; margin-left: 10px; white-space: nowrap; }
+.delta.tone-flat { color: var(--color-text-secondary); }
+
+.tablewrap.sticky-first th:first-child, .tablewrap.sticky-first td:first-child { position: sticky; left: 0; }
+.tablewrap.sticky-first thead th:first-child { background: var(--color-bg-surface); z-index: 2; }
+.tablewrap.sticky-first tbody td:first-child { background: var(--color-bg-surface); }
+.tablewrap.sticky-first tbody tr:nth-child(even):not(.player) td:first-child { background: color-mix(in srgb, var(--color-bg-track) 8%, var(--color-bg-surface)); }
+.tablewrap.sticky-first tbody tr.player td:first-child { background: color-mix(in srgb, var(--color-bg-accent) 8%, var(--color-bg-surface)); }
+.tablewrap.sticky-first tbody tr.top3 td:first-child { background: color-mix(in srgb, var(--color-bg-accent) 6%, var(--color-bg-surface)); }
+table.zebra tbody tr:nth-child(even):not(.player):not(.top3) { background: color-mix(in srgb, var(--color-bg-track) 8%, transparent); }
+
+
+/* ---------- ideal product tiles ---------- */
+
+.ideal-tiles { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.peek-body .split { display: flex; flex-direction: column; gap: 16px; }
+.chmix { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.ideal-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 12px; }
+.ideal-head b { font-variant-numeric: tabular-nums; }
+.ideal-bar { height: 6px; background: var(--color-bg-track); border-radius: var(--radius-pill); margin: 8px 0 4px; overflow: hidden; }
+.ideal-bar i { display: block; height: 100%; background: var(--color-bg-accent); border-radius: var(--radius-pill); }
+.ideal-pct { font-size: 12px; color: var(--color-text-secondary); }
+
+/* ---------- badges ---------- */
+
+
+/* ---------- toast & modal ---------- */
+
+/* Тост. До ветки molecules был объявлен дважды в разных концах
+   файла: геометрия здесь, раскладка на двести строк ниже, и чтобы понять
+   компонент, их надо было складывать в голове. Слой 66 — над плашкой
+   онбординга (60) и выноской у «Досье» (65), под окнами (69, 70). */
+.toast {
+  display: flex; align-items: flex-start; gap: var(--space-3);
+  position: fixed; right: var(--space-5); bottom: var(--space-5); z-index: 66;
+  max-width: 460px; max-height: 40vh; overflow: auto;
+  padding: 12px 16px;
+  border-radius: var(--radius-xs);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  box-shadow: var(--shadow-overlay);
+  font-size: 14px;
+  white-space: pre-wrap;
+}
+.toast.err { border-left-color: var(--color-status-danger); }
+.toast.warn { border-left-color: var(--color-status-warning-line); }
+.toast.ok { border-left-color: var(--color-status-success); }
+.toast[hidden] { display: none; }
+
+.modal {
+  position: fixed; inset: 0; z-index: 70;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--color-bg-scrim);
+}
+.modal[hidden] { display: none; }
+.modal .panel { width: 420px; max-width: 92vw; }
+.modal.drawer .panel { width: 480px; }
+
+.empty { color: var(--color-text-secondary); font-size: 14px; padding: 28px 0; text-align: center; }
+
+/* ---------- P0: inline validation, autosave, loaders ---------- */
+
+/* <button class="issue"> в разметке не создаётся ни разу — правило было
+   мёртвым и снято веткой atoms. Кликабельная строка в системе одна:
+   пункт списка проверки .cb-pop .pop-item. */
+
+.invalid { border-color: var(--color-status-danger) !important; outline: 2px solid var(--color-status-danger); outline-offset: -1px; }
+.invalid-card { box-shadow: 0 0 0 2px var(--color-status-danger); border-radius: var(--radius-xs); }
+/* Правка 9: здесь стояло `.warn { border-color: … !important; outline: 2px … }`
+   — остаток инлайновой валидации полей. Класс `warn` в проекте никто полям не
+   ставит; носят его модификаторы компонентов (.toast.warn, .chip.tone-warning,
+   .cb-pop .pop-item.warn), и правило рисовало вокруг каждого из них жёлтое
+   кольцо со скруглением. Соседи по блоку — .invalid, .invalid-card,
+   .warn-card — не проставляются вообще нигде, оставлены как есть. */
+.warn-card { box-shadow: 0 0 0 2px var(--color-status-warning-line); border-radius: var(--radius-xs); }
+
+.flash { animation: flash-issue 1.4s ease-out; }
+@keyframes flash-issue {
+  0% { box-shadow: 0 0 0 3px var(--color-status-danger); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+.save-status { font-size: 12px; color: var(--color-text-secondary); font-variant-numeric: tabular-nums; margin-top: 8px; }
+
+.confirm-row { font-size: 14px; margin-top: 8px; }
+.confirm-msg { font: 400 12px/1.35 var(--font-family-text); margin-top: var(--space-1); }
+/* Пометка о последствиях в подтверждении («Действие необратимо»): тон
+   предупреждения приходит классом .tone-warning, здесь только набор и место. */
+.confirm-note { margin: var(--space-4) 0 0; font: 600 14px/1.35 var(--font-family-text); }
+
+/* Занято: спиннер встаёт НА МЕСТО иконки, а не добавляется к ней. Своя
+   иконка кнопки прячется, ::before занимает её слот. У кнопки без иконки
+   слот появляется на время загрузки — ширина растёт, и это честнее, чем
+   подменять надпись. */
+button.busy { opacity: .7; cursor: progress; }
+button.busy > svg { display: none; }
+button.busy::before {
+  content: ""; flex: none; width: 12px; height: 12px;
+  border: 2px solid currentColor; border-top-color: transparent;
+  border-radius: var(--radius-pill); animation: spin .7s linear infinite;
+}
+.word-btn.busy::before { width: 10px; height: 10px; border-width: 1.5px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.skeleton {
+  display: inline-block; background: color-mix(in srgb, var(--color-bg-track) 55%, transparent);
+  border-radius: var(--radius-xs); height: 14px;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+
+/* ---------- admin: panel header, leaderboard top-3 ---------- */
+
+/* перенос в админку держал это как инлайн-стиль в admin.js —
+   гейт по styles.css его не видел. Вынесено в класс, чтобы жить на виду. */
+.claims-scroll { max-height: 420px; overflow: auto; }
+
+.panel-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.panel-head h2 { margin: 0; }
+
+/* 1/2/3 места лидерборда: ахроматическая лестница «ранг без заливки цветом»
+   (Ink-deep/Steel/Slate) — медальные жёлто-серебристо-бронзовые hex сюда не попадают,
+   в системе один хроматический акцент, и это не он (The One Ember Rule). */
+.rank-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: var(--radius-pill);
+  font: 600 12px var(--font-family-text); font-variant-numeric: tabular-nums; color: var(--color-text-inverse);
+}
+.rank-1 { background: var(--color-bg-rank-1); }
+.rank-2 { background: var(--color-bg-rank-2); }
+.rank-3 { background: var(--color-bg-tertiary); }
+.rank-plain { background: var(--color-bg-track); color: var(--color-text-secondary); }
+table tbody tr.top3 { background: color-mix(in srgb, var(--color-bg-accent) 6%, transparent); }
+
+/* ---------- accessibility & micro-states ---------- */
+
+:is(:focus-visible, [data-force~="focus"]) { outline: 2px solid var(--color-action); outline-offset: 2px; }
+
+.toast .toast-text { flex: 1; min-width: 0; }
+/* Крестик тоста — общая иконочная кнопка, а не собственная форма: он был
+   текстовым «×» 17 px, то есть глифом шрифта вместо глифа иконки. Рамки у
+   него нет: тост сам по себе всплывающий слой, лишний контур там шумит. */
+/* Крестик тоста — та же кнопка без текста, только без рамки и заливки:
+   тост сам по себе всплывающий слой, лишний контур там шумит. */
+.toast button { border: 0; background: none; color: var(--color-text-secondary); }
+.toast button:is(:hover, [data-force~="hover"]) { color: var(--color-text-primary); }
+
+.empty-state { text-align: center; padding: 26px 12px; color: var(--color-text-secondary); }
+.empty-icon { width: 24px; height: 24px; color: var(--color-text-faint); margin-bottom: 10px; }
+.empty-title { font-weight: 600; color: var(--color-text-primary); margin-bottom: 4px; }
+
+.bottom-actions { margin-top: 14px; }
+
+.sub.prev { display: block; margin-top: 2px; font-size: 12px; color: var(--color-text-secondary); }
+
+.entrant-note {
+  margin-top: 10px; padding: 8px 12px; border-radius: var(--radius-xs);
+  background: color-mix(in srgb, var(--color-bg-accent) 10%, var(--color-bg-surface));
+  border: 1px solid color-mix(in srgb, var(--color-action) 40%, var(--color-border-default));
+  color: var(--color-text-primary); font-size: 14px; font-weight: 600;
+}
+
+
+/* ================= decisions v2 (DESIGN.md) ================= */
+
+/* явный width:100% — без него .wrap (авто-margin поверх грида
+   .shell) считается по content-based fit-content, а не по треку
+   грида: auto-отступы у грид-элемента отменяют растяжение (justify-self:
+   stretch не действует, если инлайн-margin авто — правило CSS Box Alignment),
+   и без явной ширины .wrap ужимается по предпочтительной ширине содержимого.
+   Пока у карточки не было контейнерного запроса, это молча совпадало с
+   нужным поведением (предпочтительная ширина двухколоночной карточки и так
+   была близка к сжатию до доступного места). Но inline-size containment
+   .cards (ниже) выключает эту связь по спецификации — контейнер обязан
+   не зависеть размером от содержимого, поэтому вклад .cards в fit-content
+   родителя перестаёт отражать реальную ширину карточек, и .wrap схлопывается
+   к произвольно маленькой ширине независимо от того, открыта ли панель
+   обзора. width: 100% убирает шринк-ту-фит целиком: .wrap всегда равен
+   треку грида (переменная колонка 1fr слева от панели), max-width её же
+   только сверху ограничивает на очень широких окнах, margin: auto тогда
+   центрирует остаток — ровно как и было задумано. */
+/* Низ страницы: запас под полосу управления, а пока раскрыта плашка заданий
+   онбординга (--onb-tray-h, onboarding-ui.js; 0 — свёрнута или её нет) —
+   ещё и под неё, чтобы последние поля прокручивались выше плашки. */
+.wrap { width: 100%; max-width: var(--size-shell); min-width: 0; padding-top: 0;
+  padding-bottom: max(150px, calc(var(--cb-h, 0px) + var(--onb-tray-h, 0px) + 2 * var(--space-4))); }
+
+.topbar { background: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-default); border-radius: 0; box-shadow: none; padding: 0 24px; }
+.topbar-main { height: 52px; gap: 16px; align-items: center; }
+.topbar h1 { font: 700 20px/1 var(--font-family-display); letter-spacing: .03em; text-transform: uppercase; }
+/* DESIGN.md → Chips: пилюля, рамка, текст без заливки. Завершённая игра —
+   та же пилюля в Ink (рамка и текст), а не заливка --ok: заливка осталась от
+   слоя до редизайна и перекрашивала только фон, текст брала из правила выше
+   (Steel), давая тёмно-серый на тёмно-зелёном — контраст ≈1,9:1. */
+.chip.done { border-color: var(--color-border-strong); color: var(--color-text-primary); }
+.topbar {
+  position: static; transform: none;
+  width: 100%; max-width: var(--size-shell-bordered); margin: 0 auto 12px;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default); border-top: 0;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  box-shadow: none; padding: 0 var(--space-5);
+}
+
+/* вкладки: единственное, что липнет к верху. Белый фон обнимает саму навигацию
+   капсулой с прямыми верхними углами — «чёлка» над контентом, а не полоса во всю ширину */
+.player-sticky {
+  position: sticky; top: 0; z-index: 15;
+  display: flex; justify-content: center;
+  background: none; padding: 0; margin-bottom: var(--space-5);
+}
+/* ТАБ — атом. Самостоятельный компонент, а не размер кнопки: на кнопку
+   похож стилями и стоит на той же ступени высоты, но правила свои —
+   навигация и действие разные вещи, и связывать их одним объявлением
+   значит, что правка кнопки молча поедет в навигацию.
+
+   Атом адресуется своим классом, а не через предка. До этого он
+   существовал только как «.tabs button», то есть таб не мог жить вне
+   панели — атом и молекула были перемешаны. */
+.tab {
+  height: var(--size-control-sm); padding: 0 var(--space-3);
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--space-2);
+  border: 0; background: none; border-radius: var(--radius-pill);
+  font: 500 12px/1 var(--font-family-text);
+  color: var(--color-text-tab);
+  white-space: nowrap;
+  cursor: pointer;
+}
+/* Таб никогда не оранжевый: это навигация, а не действие (The One Ember Rule). */
+.tab.active, .tab[aria-selected="true"] {
+  background: var(--color-bg-tab-active); color: var(--color-text-tab-active); font-weight: 600;
+}
+.tab:is(:hover, [data-force~="hover"]):not(.active, [aria-selected="true"], :disabled) { color: var(--color-text-tab-hover); }
+.tab:is(:focus-visible, [data-force~="focus"]) { outline: 2px solid var(--color-action); outline-offset: 2px; }
+
+/* ПАНЕЛЬ ТАБОВ — молекула. Знает про раскладку и капсулу и ничего не знает
+   про устройство таба внутри. */
+.tabs {
+  display: flex; flex-wrap: wrap;
+  gap: 2px; margin: 0;
+  padding: 8px 10px;
+  background: var(--color-bg-veil);
+  border: 1px solid var(--color-border-veil);
+  border-radius: var(--radius-md);
+  transition: background .12s ease, box-shadow .12s ease;
+}
+/* Прилипшая панель: капсула темнеет, активный таб становится белым, чтобы
+   не слиться с ней. */
+.player-sticky.stuck .tabs { background: var(--color-bg-card); box-shadow: var(--shadow-overlay); }
+.player-sticky.stuck .tab.active { background: var(--color-bg-surface); }
+
+/* реакция карточки на ширину ЛЕВОЙ КОЛОНКИ (панель обзора сжимает
+   её сеткой), а не окна — медиазапрос про панель ничего не знает,
+   окно остаётся широким и при открытой панели. Контейнерный запрос ниже читает
+   именно inline-size этого элемента. */
+.cards { display: flex; flex-direction: column; gap: 14px; margin-bottom: var(--space-7); container-type: inline-size; container-name: deck; }
+
+/* ---------- карточка бренда (эталон Figma 1:1) ---------- */
+
+.brand-card.bc2 {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  padding: 8px;
+  background: var(--color-bg-card);
+  border: 0;
+  border-radius: var(--radius-xl);
+}
+.brand-card.bc2.invalid-card { box-shadow: inset 0 0 0 1px var(--color-status-danger); }
+.brand-card.bc2.warn-card { box-shadow: inset 0 0 0 1px var(--color-status-warning-line); }
+
+/* левая колонка — прозрачная поверх серого */
+.bc-now {
+  flex: none;
+  width: 350px;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: var(--space-5);
+  background: none;
+  border-radius: 0;
+}
+/* копия строки имени наверху карточки — видна только когда левая
+   колонка (контейнер .cards) узкая, см. @container deck ниже. В широком
+   режиме имя показывает bc-now, как и раньше. */
+.bc-top-name { display: none; }
+.bc-name-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+/* Онбординг: метка «заполнено за вас» у брендов-заполнителей — строкой под
+   именем и кнопкой свернуть (order), имя не переносится. */
+.bc-fill-note { order: 1; flex-basis: 100%; }
+.bc-name {
+  margin: 0;
+  font: 700 50px/1 var(--font-family-display);
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: var(--color-text-strong);
+}
+/* Иконочной кнопки как отдельного компонента нет: это обычная кнопка
+   без текста. Квадратной и круглой её делает то, что внутри один глиф и
+   больше ничего, — это видно из разметки, и отдельный класс для этого не нужен.
+   Признак — aria-label вместе с глифом внутри. Первая редакция проверяла
+   `svg:only-child` и была неверной: :only-child считает только ЭЛЕМЕНТЫ, а
+   надпись кнопки — текстовый узел, не элемент. Поэтому под правило
+   попадала и кнопка «иконка плюс текст», и надпись вылезала за круг.
+   aria-label у такой кнопки обязателен в любом случае — имя ей брать
+   больше неоткуда, — так что признак не случайный, а содержательный.
+
+   Ширина равна высоте своего размера, полей нет, радиус — пилюля. */
+button[aria-label]:has(> svg) {
+  width: var(--size-control); padding: 0;
+  border-radius: var(--radius-pill);
+}
+button.small[aria-label]:has(> svg) { width: var(--size-control-sm); }
+/* фокус: DESIGN.md требует кольцо 2 px Ember с отступом 2 px у ЛЮБОЙ кнопки
+   (§ Buttons → Hover/Focus/Disabled) — глобальное правило `:focus-visible`
+   ниже по файлу уже это делает. outline:none здесь снимал его у всех трёх
+   применений icon-btn (card-toggle, peek-close, peek-half); hover остаётся
+   отдельно, focus-visible трогает только цвет. */
+button[aria-label]:has(> svg):is(:hover, [data-force~="hover"]) { color: var(--color-text-strong); }
+.card-toggle .chev { width: 16px; height: 16px; }
+.card-toggle .chev svg { width: 16px; height: 16px; }
+
+/* свёрнутая карточка: узкая полоса — имя слева по центру по вертикали,
+   строка «Бюджет бренда» справа. Панель редактирования тянется на всю высоту
+   карточки. */
+.brand-card.bc2.collapsed .bc-now { align-self: center; padding: var(--space-5); }
+.brand-card.bc2.collapsed .bc-edit { align-self: stretch; }
+
+/* переключатель да/нет в сетке полей (компонент кита) */
+.switcher-box { display: flex; align-items: center; height: 40px; }
+.switcher { display: inline-flex; align-items: center; cursor: pointer; }
+.switcher input { position: absolute; opacity: 0; width: 0; height: 0; }
+.switcher .track {
+  display: inline-flex; align-items: center;
+  width: 34px; height: 20px; padding: 2px;
+  background: var(--color-bg-switch-track); border-radius: var(--radius-pill);
+  transition: background .12s ease;
+}
+.switcher .track i {
+  width: 16px; height: 16px; border-radius: var(--radius-pill);
+  background: var(--color-bg-surface);
+  transition: transform .12s ease;
+}
+.switcher input:checked + .track { background: var(--color-bg-accent); }
+.switcher input:checked + .track i { transform: translateX(14px); }
+/* Фокус — кольцо Ember, как у всех контролов. */
+.switcher input:is(:focus-visible, [data-force~="focus"]) + .track { outline: 2px solid var(--color-action); outline-offset: 2px; }
+/* Наведение — дорожка темнеет: выключенная до Slate, включённая до
+   Ember-burnt, как primary под курсором. */
+.switcher:is(:hover, [data-force~="hover"]):not(:has(input:disabled)) .track { background: var(--color-bg-tertiary); }
+.switcher:is(:hover, [data-force~="hover"]):not(:has(input:disabled)) input:checked + .track { background: var(--color-bg-accent-hover); }
+.switcher:has(input:disabled) { cursor: not-allowed; }
+/* Отключённый не гасится прозрачностью: .45 на Ember даёт грязный розовый
+   (то же правило, что у primary), поэтому дорожка уходит в Ash. */
+.switcher input:disabled + .track { background: var(--color-bg-card); }
+.bc-rule { height: 1px; background: var(--color-border-soft); }
+.bc-section { display: flex; flex-direction: column; gap: 6px; }
+.bc-section-head {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding-top: var(--space-2);
+}
+.bc-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--space-3); }
+.bc-cell { display: flex; flex-direction: column; justify-content: flex-start; gap: 4px; padding: 6px 0; min-width: 0; }
+.bc2 .help-tip { margin-left: 0; }
+.bc-cell .k { font: 400 12px/17px var(--font-family-text); color: var(--color-text-secondary); }
+.bc-cell .v { font: 600 12px/14px var(--font-family-text); color: var(--color-text-primary); font-variant-numeric: tabular-nums; }
+.bc-section.attrs .bc-cell .v, .bc-section.shares .bc-cell .v { font: 600 14px/17px var(--font-family-text); }
+
+/* правая колонка — белая панель с тенью */
+.bc-edit {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 0 24px;
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-surface);
+}
+.bc-edit > * { flex: 0 0 auto; }
+
+/* Н1: лоток под белой панелью (Paper, «Карточка бренда · правка»).
+   Подложка — ближайший токен к серому лотка на рисунке. */
+.bc-right {
+  flex: 1; min-width: 0; display: flex; flex-direction: column;
+  border-radius: var(--radius-lg);
+  background: var(--color-base-neutral-100);
+  box-shadow: inset 0 0 0 1px var(--color-border-veil);
+}
+.bc-right > .bc-edit { flex: none; }
+.unit-foot {
+  position: sticky; bottom: var(--cb-h, 0px); z-index: 1;
+  display: flex; align-items: flex-start; gap: var(--space-3);
+  padding: var(--space-6);
+  /* На месте полоса прозрачная: под ней тот же лоток, а тень белой панели
+     не перекрывается (полоса стоит слоем выше панели ради прилипания).
+     Фон лотка — только прилипшей, когда под ней проезжает панель. */
+  background: transparent;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  box-shadow: inset 1px 0 0 var(--color-border-veil), inset -1px 0 0 var(--color-border-veil), inset 0 -1px 0 var(--color-border-veil);
+}
+.unit-foot .prop-label { margin-top: 0; }
+.unit-foot-cells { flex: 1; min-width: 0; display: grid; grid-template-columns: repeat(3, minmax(0, var(--size-field))); gap: var(--space-3); }
+.unit-foot .ps-value.tone-danger { color: var(--color-text-danger); }
+.unit-foot.pending .ps-value { color: var(--color-text-tertiary); }
+/* прилипла: низ белой панели растворяется и уходит под полосу со
+   скруглёнными углами — уголки цвета лотка поверх углов панели */
+.unit-foot::before, .unit-foot::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 100%;
+  pointer-events: none; visibility: hidden;
+}
+.unit-foot::before { height: var(--space-5); background: linear-gradient(to bottom, transparent, var(--color-bg-surface)); }
+.unit-foot::after {
+  height: var(--radius-lg);
+  background:
+    radial-gradient(circle at 100% 0, transparent var(--radius-lg), var(--color-base-neutral-100) var(--radius-lg)) left bottom / var(--radius-lg) var(--radius-lg) no-repeat,
+    radial-gradient(circle at 0 0, transparent var(--radius-lg), var(--color-base-neutral-100) var(--radius-lg)) right bottom / var(--radius-lg) var(--radius-lg) no-repeat;
+  /* уголки и затухание лежат поверх обводки лотка — обводка продолжена по ним */
+  box-shadow: inset 1px 0 0 var(--color-border-veil), inset -1px 0 0 var(--color-border-veil);
+}
+.unit-foot.stuck { background: var(--color-base-neutral-100); }
+.unit-foot.stuck::before, .unit-foot.stuck::after { visibility: visible; }
+/* Прилипла: настоящий низ лотка уходит под нижнюю полосу, и в вырезах
+   скруглённых нижних углов полосы виден его прямой край. Вырезы закрашены
+   цветом подложки карточки — полоса читается закрытой карточкой. */
+.unit-foot-corners {
+  position: absolute; left: 0; right: 0; bottom: 0; height: var(--radius-lg);
+  background:
+    radial-gradient(circle at 100% 0, transparent var(--radius-lg), var(--color-bg-card) var(--radius-lg)) left bottom / var(--radius-lg) var(--radius-lg) no-repeat,
+    radial-gradient(circle at 0 0, transparent var(--radius-lg), var(--color-bg-card) var(--radius-lg)) right bottom / var(--radius-lg) var(--radius-lg) no-repeat;
+  pointer-events: none; visibility: hidden;
+}
+.unit-foot.stuck .unit-foot-corners { visibility: visible; }
+
+/* Строка свойства. Каждая строка завёрнута в .prop-group, раскрытая или
+   нет: разделитель рисует один элемент и одним способом. */
+.prop-group { box-shadow: inset 0 -1px 0 var(--color-border-soft); }
+.bc-edit > .prop-group:last-child { box-shadow: none; }
+.prop-row {
+  display: flex; align-items: flex-start; gap: var(--space-3);
+  padding: var(--space-5) 0;
+}
+.prop-row.middle { align-items: center; }
+
+/* Подпись стоит по центру контрола, а не всего поля: опускается на строку
+   подписи поля (SM 12/1.4) и шаг до контрола. Высоту контрола несёт сама
+   надпись, а не колонка, — ошибка строки, подписанная под заголовком,
+   встаёт ниже и надпись не сдвигает. Строки со сводкой (.middle)
+   центрируются целиком. */
+.prop-label {
+  flex: none; width: var(--size-field);
+  display: flex; flex-direction: column; gap: var(--space-2);
+}
+.prop-label > span {
+  display: inline-flex; align-items: center; gap: var(--space-1);
+  font: 500 17px/1.35 var(--font-family-text);
+  color: var(--color-text-primary);
+}
+.prop-row:not(.middle) .prop-label { margin-top: calc(12px * 1.4 + var(--space-1)); }
+.prop-row:not(.middle) .prop-label > span { min-height: var(--size-control); }
+.prop-ctl { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-3); }
+/* поля строки закреплены по верху — поле с ошибкой под собой
+   не подпрыгивает; подпись строки и кнопки центрируются своим расчётом */
+.prop-row:not(.middle) .prop-ctl { align-items: flex-start; }
+/* Правка 12: правило было привязано к .prop-ctl — прежнему родителю каналов.
+   Когда ползунки переехали в раскрывающийся .prop-body, они остались без
+   display:flex и встали столбиком. Класс .channels и так один на проект,
+   привязка к родителю ничего не добавляла. */
+.channels { display: flex; gap: var(--space-3); }
+/* микс каналов у сегментов бренда — под полем доли, без наведения */
+.ch-ref { font: 400 12px/1.4 var(--font-family-text); color: var(--color-text-tertiary); font-variant-numeric: tabular-nums; }
+
+/* группа: подпись над полем */
+.bc2 .field {
+  flex: none; width: var(--size-field);
+  display: flex; flex-direction: column; justify-content: flex-start; gap: var(--space-1);
+  margin: 0;
+  font: 400 12px/1.4 var(--font-family-text);
+  color: var(--color-text-tertiary);
+}
+.bc2 .field-cap {
+  display: flex; align-items: center; gap: var(--space-1);
+  font: 400 12px/1.4 var(--font-family-text);
+  color: var(--color-text-tertiary);
+}
+.mod-dot {
+  flex: none; width: 4px; height: 4px; border-radius: var(--radius-pill);
+  background: var(--color-bg-accent);
+  visibility: hidden;
+}
+.field:has(.sfield.mod) .mod-dot { visibility: visible; }
+
+/* словесная кнопка в подписи поля: «уравнять», «сбросить» */
+.word-btn {
+  flex: none; margin-left: auto;
+  /* У текстовой размера нет — её высота от строки. Базовый button задаёт
+     --size-control, и без сброса «уравнять» и «сбросить» раздували подпись
+     поля и сводку R&D до 40 px. */
+  height: auto;
+  padding: 0; border: 0; background: none;
+  font: 400 12px/16px var(--font-family-text);
+  color: var(--color-text-tertiary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+/* The One Ember Rule: только ссылка нормировки («уравнять») — она нормирует
+   проценты каналов. «сбросить» остаётся Slate — ничего не нормирует. */
+/* фокус: та же правка, что у кнопки без текста (п. 14) — DESIGN.md требует кольцо
+   2 px Ember у ЛЮБОЙ кнопки, outline:none здесь глушил его и у словесных
+   кнопок («уравнять», «сбросить»), четвёртое (и последнее) место в системе. */
+.word-btn:is(:hover, [data-force~="hover"]), .word-btn:is(:focus-visible, [data-force~="focus"]) { color: var(--color-text-strong); }
+/* Акцентная текстовая: слово Ember. При наведении и фокусе темнеет до
+   Ink-deep, как и обычная текстовая, — правило объявлено явно, а не держится
+   на порядке строк. */
+.word-btn.accent { color: var(--color-action); }
+.word-btn.accent:is(:hover, [data-force~="hover"]), .word-btn.accent:is(:focus-visible, [data-force~="focus"]) { color: var(--color-text-strong); }
+
+/* поле со слайдером */
+.sfield {
+  position: relative;
+  display: flex; flex-direction: column; justify-content: center;
+  width: 100%;
+  padding: 0 var(--space-3);
+  /* вся рамка ставит курсор в поле (levers.js, sliderField) */
+  cursor: text;
+}
+.sf-row { display: flex; align-items: center; gap: var(--space-1); min-width: 0; }
+.sf-main { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: var(--space-1); }
+.sfield input.sf-value {
+  /* Ширину задаёт JS по замеру двойника (.sf-ghost) — ровно по введённым
+     символам. `field-sizing: content` убран сознательно: два механизма
+     ширины расходятся молча, а работает он не везде. */
+  width: auto; max-width: 100%;
+  border: 0; padding: 0; background: none;
+  font: 400 14px/1.45 var(--font-family-text);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+}
+/* Невидимый двойник поля: та же типографика, тот же контекст шрифта.
+   Из потока вынут абсолютным позиционированием, поэтому на раскладку не
+   влияет, но размеры имеет настоящие. */
+.sfield .sf-ghost {
+  position: absolute; visibility: hidden; pointer-events: none;
+  white-space: pre;
+  font: 400 14px/1.45 var(--font-family-text);
+  font-variant-numeric: tabular-nums;
+}
+.sfield input.sf-value:is(:focus, [data-force~="focus"]) { outline: none; }
+.sfield input.sf-value:disabled { color: var(--color-text-tertiary); cursor: not-allowed; }
+.sfield .sf-unit { flex: none; font: 400 14px/1.45 var(--font-family-text); color: var(--color-text-tertiary); }
+.sfield .sf-amount { flex: none; font: 400 12px/1.4 var(--font-family-text); color: var(--color-text-tertiary); font-variant-numeric: tabular-nums; }
+/* Дорожка стоит абсолютно по нижнему краю — строка значения центрируется в
+   контроле сама. */
+.sf-track {
+  position: absolute; left: var(--space-3); right: var(--space-3); bottom: 0;
+  height: var(--size-slider-rail);
+  background: var(--color-bg-switch-track);
+}
+.sf-track i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--color-bg-accent); }
+.sf-track b {
+  position: absolute; top: 50%;
+  width: var(--size-slider-handle); height: var(--size-slider-handle);
+  transform: translate(-50%, -50%);
+  border-radius: var(--radius-pill); background: var(--color-bg-accent);
+}
+/* справочная отметка: доля канала у целевого сегмента. Крупнее ручки и другого тона — её не двигают */
+.sf-track u {
+  position: absolute; top: 50%;
+  width: var(--size-slider-rail); height: var(--size-slider-mark);
+  transform: translate(-50%, -50%);
+  border-radius: 0; background: var(--color-bg-tertiary); pointer-events: none;
+}
+/* Полоса захвата — по центру дорожки, на ступень выше её. */
+.sfield input.sf-range {
+  position: absolute; left: var(--space-3); right: var(--space-3); bottom: calc(-1 * var(--space-2));
+  width: calc(100% - 2 * var(--space-3)); height: var(--space-4); margin: 0; padding: 0;
+  -webkit-appearance: none; appearance: none; background: none; opacity: 0; cursor: pointer;
+}
+/* Дорожка толстеет вниз, на рамку, а не вверх, на значение. */
+.sfield:has(.sf-range:is(:hover, [data-force~="hover"])) .sf-track,
+.sfield:has(.sf-range:is(:focus-visible, [data-force~="focus"])) .sf-track {
+  height: var(--size-slider-rail-hover);
+  bottom: calc(var(--size-slider-rail) - var(--size-slider-rail-hover));
+}
+.sfield:has(.sf-range:is(:hover, [data-force~="hover"])) .sf-track b,
+.sfield:has(.sf-range:is(:focus-visible, [data-force~="focus"])) .sf-track b {
+  width: var(--size-slider-handle-hover); height: var(--size-slider-handle-hover);
+}
+.sfield:has(.sf-range:is(:focus-visible, [data-force~="focus"])) .sf-track b { outline: 2px solid var(--color-action); outline-offset: 2px; }
+.sfield:has(.sf-range:disabled) .sf-track i,
+.sfield:has(.sf-range:disabled) .sf-track b { background: var(--color-bg-tertiary); }
+.sfield input.sf-range:disabled { cursor: not-allowed; }
+
+/* «Каналы»: кнопка «Настроить каналы» не вылезает за карточку — место ей
+   уступает поле бюджета. */
+.bc2 .prop-ctl:has(> .btn-edit) > .field { flex-shrink: 1; min-width: 0; }
+
+/* селект — атом кита; из карточки ушёл, см. kit-specs.js */
+.bc2 .seg-select {
+  width: 100%;
+  padding: 0 24px 0 10px;
+  font: 400 14px/1 var(--font-family-text);
+  color: var(--color-text-primary);
+  -webkit-appearance: none; appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--color-bg-tertiary) 50%), linear-gradient(135deg, var(--color-bg-tertiary) 50%, transparent 50%);
+  background-position: right 14px center, right 10px center;
+  background-size: 4px 4px, 4px 4px;
+  background-repeat: no-repeat;
+  text-overflow: ellipsis;
+}
+
+/* свёрнутые рычаги */
+.prop-summary { display: flex; flex-direction: column; align-items: flex-start; font: 400 14px/1.45 var(--font-family-text); color: var(--color-text-primary); }
+.prop-summary.muted { color: var(--color-text-tertiary); }
+.ps-label { font: 400 12px/1.4 var(--font-family-text); color: var(--color-text-tertiary); }
+.ps-value { font: 600 14px/1.45 var(--font-family-text); color: var(--color-text-primary); font-variant-numeric: tabular-nums; }
+.ps-value.muted { color: var(--color-text-tertiary); }
+.ps-line { display: flex; align-items: center; gap: var(--space-2); }
+.prop-summary .mod-dot, .prop-summary .word-btn { display: none; }
+.prop-summary.mod .mod-dot { display: block; visibility: visible; }
+.prop-summary.mod .word-btn { display: inline; }
+.bc2 .chev { display: inline-flex; align-items: center; justify-content: center; width: 12px; height: 12px; flex: none; }
+.bc2 .chev svg { display: block; }
+.bc2 .chev.up { transform: rotate(180deg); }
+.prop-summary .chev { color: var(--color-text-tertiary); }
+/* две сводки R&D — каждая в колонке шириной поля */
+.rd-sum { flex: none; width: var(--size-field); }
+/* сводки строки «Бюджет бренда» — колонка шириной поля, по центру
+   контрола: отступ на строку подписи поля, высота контрола. */
+.bplan-sum { flex: none; width: var(--size-field); }
+.prop-row:not(.middle) .bplan-sum {
+  margin-top: calc(12px * 1.4 + var(--space-1));
+  min-height: var(--size-control); justify-content: center;
+}
+/* Поле «План», две сводки и в свёрнутой карточке «Все свойства» шире
+   624 px — на ноутбуке строка не влезает и без режима двух окон. Перенос
+   здесь, а не в @container deck: иначе поле «План» сжимается, а не уходят
+   на следующую строку сводки и кнопка. Где места хватает, перенос ничего
+   не меняет. */
+.bplan-ctl { flex-wrap: wrap; }
+.ps-value.tone-warning { color: var(--color-text-warning); }
+/* Не форма, а роль: та же вторичная маленькая, прижатая вправо и с шевроном.
+   Своя высота 30 px и свой кегль были четвёртой формой второй кнопки —
+   геометрию теперь даёт .sm на самой кнопке. */
+.btn-edit { flex: none; margin-left: auto; }
+/* Кнопка рядом с полем («Все свойства», «Настроить каналы») встаёт по
+   центру контрола, а не всего поля с подписью: опускается на строку
+   подписи (SM 12/1.4) и шаг до контрола — как подпись строки свойства, —
+   плюс половина разницы высот поля и small-кнопки. */
+.bc2 .prop-ctl:has(> .field) > .btn-edit {
+  align-self: flex-start;
+  margin-top: calc(12px * 1.4 + var(--space-1) + (var(--size-control) - var(--size-control-sm)) / 2);
+}
+.btn-edit .chev { color: var(--color-text-primary); }
+
+/* раскрытые тела рычагов */
+/* Тело встаёт под колонку контрола: отступ — сумма ширины подписи и зазора. */
+.prop-body { padding: 0 0 var(--space-5) calc(var(--size-field) + var(--space-3)); display: flex; flex-direction: column; gap: var(--space-3); }
+/* Правка 12: разделитель над раскрытыми каналами — строка бюджета выше и
+   ползунки ниже иначе читаются как один сплошной блок. */
+.prop-body.channels-body { padding-top: var(--space-4); box-shadow: inset 0 1px 0 var(--color-border-soft); }
+.prop-body .switch { display: inline-flex; align-items: center; gap: 8px; font: 500 14px/1.45 var(--font-family-text); cursor: pointer; }
+.prop-body .switch input { margin: 0; accent-color: var(--color-action); }
+.attrs-edit { display: grid; grid-template-columns: repeat(auto-fit, var(--size-field)); gap: var(--space-3); }
+.claims-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 4px 16px; }
+.claims-grid .claim { padding: 4px 0; font: 400 14px/1.45 var(--font-family-text); }
+.claims-grid .claim input { accent-color: var(--color-action); }
+/* Лестница позиционирования: сводка —
+   формулировка целиком, с переносом; шаги — строки через разделитель, у
+   выбранного шага текст пункта и «изменить», открытый шаг — список фраз. */
+.ladder-summary { flex: 1; min-width: 0; }
+.ladder-steps { display: flex; flex-direction: column; }
+.ladder-step {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-3); align-items: start;
+  padding: var(--space-3) 0; border-top: 1px solid var(--color-border-soft);
+}
+.ladder-step.open { display: block; }
+.ladder-step .claims-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ladder-pick { font: 400 14px/1.45 var(--font-family-text); color: var(--color-text-primary); }
+.ladder-pick.muted { color: var(--color-text-tertiary); }
+/* ошибки и предупреждения: только текст. Ошибка блока — под его заголовком,
+   ширина ограничена шириной заголовка; ошибка поля — под этим полем. */
+.bc2 .issue-msg {
+  font: 400 12px/1.35 var(--font-family-text);
+}
+.bc2 .prop-label > .issue-msg { max-width: var(--size-field); }
+.bc2 .field > .issue-msg { max-width: var(--size-field); padding-top: var(--space-1); }
+
+/* карточка бренда в двухоконном режиме. Панель обзора
+   сжимает страницу сеткой — при её открытии левая колонка (контейнер .cards
+   выше) сужается, а окно браузера остаётся тем же, поэтому обычный
+   @media здесь не сработает, нужен контейнерный запрос.
+
+   Порог 1250 px — не круглое число «на глаз», а сумма того, что физически
+   должно поместиться в двухколоночной раскладке:
+     16  — .brand-card.bc2, поле 8 px с двух сторон
+   + 350  — .bc-now, ширина виджета продукта
+   +  48  — .bc-edit, поле 0 24 px с двух сторон
+   + 200  — .prop-label, ширина подписи строки свойства
+   +  12  — .prop-row, зазор между подписью и контролом (--space-3)
+   + 624  — «Каналы», самая широкая строка карточки: три поля по 200 px
+            с зазором 12 px = 200×3 + 12×2
+   = 1250 px.
+   Ниже этой ширины строка «Каналы» в обычной раскладке уже не влезает без
+   переноса — виджет продукта убирается (строка «Бюджет бренда» остаётся), имя
+   переезжает в .bc-top-name (см. выше по файлу), а строки карточки
+   раскладываются сеткой «подпись и кнопка | поля в три колонки» — правила
+   в конце блока.
+
+   Задача 16, п.4 убрала отсюда `flex-wrap` на `.prop-row`: он переносил
+   любой ряд, в том числе «Цену», которой переносить нечего. Решение
+ снова ставит подпись над контролом, но иначе — сеткой: в узкой
+   колонке ВСЕ строки карточки одинаково «подпись и кнопка | поля в ряд
+   тремя равными колонками», без переноса по месту, так что разнобоя между
+   рядами нет. Правила — в конце блока. */
+@container deck (max-width: 1250px) {
+  .bc-top-name { display: block; padding: var(--space-5) var(--space-5) 0; }
+  .brand-card.bc2 > .bc-now { display: none; }
+  .brand-card.bc2 { flex-direction: column; align-items: stretch; gap: 12px; }
+  .bc-edit { width: 100%; }
+  /* Н1: полоса P&L ставит подпись над сеткой; колонки сетки сжимаются minmax */
+  .unit-foot { flex-direction: column; }
+  /* Замечание: в узкой колонке каждая строка карточки —
+     сетка в три равные колонки. Подпись строки и её кнопка («Все свойства»,
+     «Свернуть», «Редактировать») — первой строкой, поля и сводки — в ряд под
+     ними; раскрытое тело — на всю ширину под строкой, поля тем же шагом.
+     Рядом с подписью 200 px три колонки по 200 px здесь не помещались, и
+     перенос ставил поля столбиком, а кнопку — под ними. */
+  .bc2 .prop-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
+  .bc2 .prop-row > .prop-label { grid-column: 1 / 3; grid-row: 1; width: auto; margin-top: 0; align-self: center; }
+  .bc2 .prop-row > .prop-ctl { display: contents; }
+  .bc2 .prop-row > .field, .bc2 .prop-row > .prop-ctl > * { grid-row: 2; width: auto; min-width: 0; }
+  .bc2 .prop-row > .prop-ctl > .btn-edit { grid-row: 1; grid-column: 3; justify-self: end; align-self: center; margin: 0; }
+  /* сводка лестницы — формулировка целиком, во всю ширину под подписью */
+  .bc2 .prop-row > .prop-ctl > .ladder-summary { grid-column: 1 / -1; }
+  /* список фраз в узкой карточке — одной колонкой */
+  .ladder-step .claims-grid { grid-template-columns: minmax(0, 1fr); }
+  .bc2 .prop-body { padding-left: 0; }
+  .channels, .attrs-edit { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .bc2 :is(.channels, .attrs-edit) > .field { width: auto; min-width: 0; }
+  }
+
+/* ---------- боковая панель обзора ---------- */
+
+.shell {
+  display: grid;
+  /* Левой колонке — свой минимум --size-wrap-min (650 px): по решению владельца
+     продукта она не должна сжиматься в полоску. Тяга за кромку ограничена тем же
+     токеном (peek.js читает его), поэтому переполнения не возникает. В
+     полноэкранном состоянии .wrap скрыт и минимум снимается — иначе пустая
+     колонка продолжала бы держать под себя место. */
+  grid-template-columns: minmax(var(--wrap-min, var(--size-wrap-min)), 1fr) var(--peek-w, 0px);
+  align-items: start;
+}
+:root[data-peek-full] .shell { --wrap-min: 0px; }
+
+.peek {
+  /* колонка 2 — явно: когда .wrap скрыт (полноэкранная панель), авто-раскладка
+     грида иначе перекинет единственный оставшийся элемент в колонку 1 */
+  grid-column: 2;
+  position: sticky; top: 0; height: 100vh;
+  /* выше .command-bar (z-index: 40): несжимаемые дети полосы (.fc-card,
+     кнопка запуска) вылезают из-под её правого края при узкой левой колонке —
+     панель должна краситься поверх этого остатка, а не под ним */
+  z-index: 50;
+  display: flex; flex-direction: column;
+  min-width: 0;
+  background: var(--color-bg-surface);
+  border-left: 1px solid var(--color-border-default);
+}
+.peek[hidden] { display: none; }
+
+/* панель во весь экран: за ней ничего не видно, левая колонка не рисуется */
+:root[data-peek-full] .wrap { display: none; }
+
+/* Кнопка ширины панели показывает, что произойдёт ПО НАЖАТИЮ: пока панель
+   в половину — стрелки наружу (развернуть), в полный экран — рамка с
+   перегородкой (сложить пополам). Подпись переключает syncHalfButton. */
+:root:not([data-peek-full]) .peek-half .icon-half,
+:root[data-peek-full] .peek-half .icon-full { display: none; }
+
+/* кромка захвата: тянет ширину панели. .peek уже sticky — свой контекст
+   позиционирования для абсолютных потомков, отдельный relative не нужен. */
+.peek-grip {
+  position: absolute; left: -4px; top: 0; bottom: 0; width: 8px;
+  cursor: col-resize; background: transparent;
+  z-index: 1;
+  transition: background-color var(--motion-duration-mid) ease;
+}
+.peek-grip:is(:hover, [data-force~="hover"]), .peek-grip.dragging { background: var(--color-bg-accent); }
+/* Рисочка: посередине высоты, слева от кромки — видно, что за кромку
+   тянут. Часть зоны захвата (псевдоэлемент), поэтому наведение на неё —
+   наведение на кромку: курсор col-resize, полоса Ember, а рисочка
+   плавно гаснет — её роль берёт полоса. */
+.peek-grip::after {
+  content: ""; position: absolute;
+  top: 50%; right: 100%;
+  width: var(--size-grip-thickness); height: var(--size-grip-length);
+  transform: translateY(-50%);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-tertiary);
+  transition: opacity var(--motion-duration-mid) ease;
+}
+.peek-grip:is(:hover, [data-force~="hover"])::after, .peek-grip.dragging::after { opacity: 0; }
+
+.peek-head {
+  flex: none;
+  display: flex; align-items: center; gap: 16px;
+  height: 68px; padding: 0 24px;
+  background: var(--color-bg-card);
+  box-shadow: inset 0 -1px 0 var(--color-border-default);
+}
+.peek-tabs { margin-right: auto; }
+.peek-close { margin-left: 0; }
+
+.peek-body { flex: 1; min-height: 0; overflow: auto; padding: var(--space-6); background: var(--color-bg-card); }
+.peek-body > div { max-width: var(--size-shell); margin: 0 auto; }
+/* карточки внутри панели держатся поверхностью, а не обводкой */
+.peek-body .panel { border: 0; border-radius: var(--radius-xl); padding: var(--space-5); }
+/* 4. таблица не наезжает на соседей: не влезает — прокручивается вбок */
+.peek-body .tablewrap { overflow-x: auto; max-width: 100%; }
+/* ---------- справочный слой: «Показатели» и «Рынок» ---------- */
+/* Разметка — results.js и market.js, детали — reference.js. Экран: чёрная
+   полоса с годом, под ней белые панели на сером поле панели обзора. */
+
+.ref { container: ref / inline-size; display: flex; flex-direction: column; gap: var(--space-4); }
+.ref-muted { color: var(--color-text-tertiary); }
+.ref-strong { font-weight: 600; }
+.ref .tone-up { color: var(--color-text-success); }
+.ref .tone-down { color: var(--color-text-danger); }
+.ref .tone-flat { color: var(--color-text-tertiary); }
+
+/* Панель. Заголовок — дисплейный Bold капителью, как имя бренда: разделы
+   справочного слоя держат ритм заголовками, а не рамками. */
+.ref-panel { background: var(--color-bg-surface); border-radius: var(--radius-lg); padding: var(--space-6); min-width: 0; }
+.ref-panel-head { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3) var(--space-5); margin-bottom: var(--space-5); }
+.ref-title { display: flex; align-items: center; font: 700 35px/1 var(--font-family-display); text-transform: uppercase; letter-spacing: .02em; color: var(--color-text-strong); margin: 0; }
+.ref-sub { display: inline-flex; align-items: center; font: 400 12px/16px var(--font-family-text); color: var(--color-text-tertiary); }
+.ref-h3 { font: 600 17px/22px var(--font-family-text); text-transform: none; letter-spacing: 0; color: var(--color-text-primary); margin: 0 0 var(--space-4); }
+.ref-rule { height: 1px; background: var(--color-border-default); margin: var(--space-7) 0 var(--space-6); }
+.ref-cap { font: 600 12px/15px var(--font-family-text); text-transform: uppercase; letter-spacing: .08em; color: var(--color-text-secondary); margin-bottom: var(--space-2); }
+
+/* Полоса экрана: «Название • Год N» и переключатель годов. Липнет к верху
+   панели обзора; в «Показателях» (joined) продолжается блоком итогов и
+   скругляется снизу, только когда прилипла. */
+/* top — минус поле .peek-body (24 = --space-6): липкий элемент встаёт по
+   краю содержимого, а не по краю прокрутки, и без сдвига над полосой
+   оставался зазор, в котором просвечивали строки. */
+.ref-strip {
+  position: sticky; top: calc(-1 * var(--space-6)); z-index: 5;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-6);
+  background: var(--color-bg-strong); color: var(--color-text-inverse);
+  border-radius: var(--radius-lg);
+}
+.ref-strip.joined:not(.stuck) { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.ref-strip.stuck { border-top-left-radius: 0; border-top-right-radius: 0; box-shadow: var(--shadow-overlay); }
+.ref-strip-title { display: flex; align-items: center; gap: var(--space-3); font: 700 35px/1 var(--font-family-display); text-transform: uppercase; letter-spacing: .02em; color: var(--color-text-inverse); margin: 0; }
+.ref-strip-dot { flex: none; width: var(--size-ref-dot); height: var(--size-ref-dot); border-radius: 50%; background: currentColor; }
+.ref-strip .ref-years { margin: 0; }
+
+/* Блок итогов года: тёмный, плитки с графиком по годам. */
+.ref-summary { background: var(--color-bg-strong); color: var(--color-text-inverse); border-radius: var(--radius-lg); padding: var(--space-6); }
+.ref-strip.joined + .ref-summary { margin-top: calc(-1 * var(--space-4)); padding-top: var(--space-3); border-top-left-radius: 0; border-top-right-radius: 0; }
+.ref-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
+@container ref (max-width: 899px) {
+  .ref-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ref-kpi:last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+.ref-kpi { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; padding: var(--space-4) var(--space-5); border-radius: var(--radius-md); background: var(--color-bg-inverse-soft); }
+.ref-kpi-top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); min-height: var(--size-control-xs); }
+.ref-kpi-k { display: inline-flex; align-items: center; font: 500 12px/16px var(--font-family-text); color: var(--color-text-inverse-secondary); }
+.ref-kpi-v { font: 600 35px/1.15 var(--font-family-text); font-variant-numeric: tabular-nums; letter-spacing: -.01em; white-space: nowrap; }
+.ref-kpi-vis { margin-top: auto; padding-top: var(--space-3); }
+.ref-kpi-cap { display: flex; justify-content: space-between; gap: var(--space-2); margin-top: var(--space-1); font: 400 12px/16px var(--font-family-text); color: var(--color-text-inverse-tertiary); }
+.ref-split { display: flex; gap: var(--size-ref-gap); height: var(--size-ref-split); margin-top: var(--space-6); border-radius: var(--radius-ref-bar); overflow: hidden; }
+.ref-split i { display: block; min-width: var(--size-ref-gap); background: var(--color-border-inverse); }
+.ref-split i.own { background: var(--color-bg-accent); }
+.ref-spark { position: relative; height: var(--size-ref-spark); }
+.ref-spark svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.ref-spark-line { fill: none; stroke: var(--color-text-inverse); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.ref-spark-area { fill: var(--color-bg-inverse-soft); }
+.ref-spark-base { stroke: var(--color-border-inverse); vector-effect: non-scaling-stroke; }
+.ref-spark-dot { position: absolute; width: var(--size-ref-dot); height: var(--size-ref-dot); border-radius: 50%; background: var(--color-bg-accent); box-shadow: 0 0 0 var(--size-ref-gap) var(--color-bg-strong); transform: translate(-50%, -50%); }
+
+/* Доли компаний рынка одной полосой: своя Ember, чужие — ахроматической
+   лестницей по убыванию доли. */
+.ref-stack { display: flex; gap: var(--size-ref-gap); height: var(--size-ref-stack); margin-bottom: var(--space-5); }
+.ref-stack-seg { display: flex; flex-direction: column; justify-content: space-between; min-width: var(--size-ref-gap); padding: var(--space-2) var(--space-3); border-radius: var(--radius-xs); overflow: hidden; white-space: nowrap; }
+.ref-stack-name { font: 500 12px/1 var(--font-family-text); }
+.ref-stack-v { font: 600 17px/1 var(--font-family-text); font-variant-numeric: tabular-nums; }
+.ref-stack-seg.own { background: var(--color-bg-accent); color: var(--color-text-on-accent); }
+.ref-stack-seg.rung-1 { background: var(--color-bg-secondary); color: var(--color-text-inverse); }
+.ref-stack-seg.rung-2 { background: var(--color-bg-tertiary); color: var(--color-text-inverse); }
+.ref-stack-seg.rung-3 { background: var(--color-border-control); color: var(--color-text-primary); }
+.ref-stack-seg.rung-4 { background: var(--color-bg-track); color: var(--color-text-primary); }
+.ref-stack-seg.rung-5 { background: var(--color-bg-card); color: var(--color-text-primary); }
+
+/* Таблица справочного слоя: шапка на сером со скруглёнными краями, строки
+   на тонких линиях, свои бренды — точкой Ember и жирным. Шапка в два яруса
+   делит колонки на группы белым столбцом (ref-gs), в теле ему отвечает
+   тонкая линия. */
+.ref-table { border-collapse: separate; border-spacing: 0; font-size: 14px; }
+.ref-table th { padding: var(--space-2) var(--space-3); background: var(--color-bg-card); border-bottom: 0; vertical-align: middle; }
+.ref-table thead tr:first-child th:first-child { border-top-left-radius: var(--radius-xs); }
+.ref-table thead tr:first-child th:last-child { border-top-right-radius: var(--radius-xs); }
+.ref-table thead tr:last-child th:first-child { border-bottom-left-radius: var(--radius-xs); }
+.ref-table thead tr:last-child th:last-child { border-bottom-right-radius: var(--radius-xs); }
+.ref-table td { padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--color-border-soft); }
+.ref-table tbody tr:last-child td { border-bottom: 0; }
+.ref-table tbody tr:is(:hover, [data-force~="hover"]) td { background: var(--color-bg-data); }
+/* липкая первая колонка: база красит чётные строки зеброй — здесь зебры нет */
+.ref .tablewrap.sticky-first thead tr:nth-child(n) th:first-child { background: var(--color-bg-card); }
+.ref .tablewrap.sticky-first tbody tr:nth-child(n) td:first-child { background: var(--color-bg-surface); }
+.ref .tablewrap.sticky-first tbody tr:nth-child(n):is(:hover, [data-force~="hover"]) td:first-child { background: var(--color-bg-data); }
+.ref-own td { font-weight: 600; }
+.ref-name::before { content: ""; display: inline-block; width: var(--size-ref-dot); height: var(--size-ref-dot); margin-right: var(--space-2); border-radius: 50%; background: transparent; vertical-align: 1px; }
+.ref-name.own::before { background: var(--color-bg-accent); }
+.ref-new { margin-left: var(--space-2); padding: 0 var(--space-2); border-radius: var(--radius-pill); background: var(--color-bg-card); font: 400 12px/20px var(--font-family-text); color: var(--color-text-secondary); }
+.ref-table th.ref-gs { box-shadow: inset var(--size-ref-gap) 0 0 var(--color-bg-surface); }
+.ref-table td.ref-gs { border-left: 1px solid var(--color-border-soft); }
+.ref-table .ref-gs { padding-left: var(--space-6); }
+/* Верхний ярус шапки — подпись группы колонок, стиль Display Table. Имена
+   брендов в P&L — та же подпись группы, поэтому правило у них одно. */
+.ref-table th.ref-grp, .ref-table th.ref-brand { font: 700 24px/1 var(--font-family-display); text-transform: uppercase; letter-spacing: .02em; color: var(--color-text-strong); }
+.ref-table th.ref-grp { text-align: center; }
+.ref-table th.ref-brand { padding-top: var(--space-3); }
+
+/* Широкая таблица гаснет к краю, за которым есть ещё колонки (классы ставит
+   reference.js → edgeFades). Затухание — маской, а не градиентом поверх: так
+   гаснут и серая шапка, и подсветка строк, а не только белый фон. Маска
+   читает одну альфу, цвет в ней роли не играет. Слева затухание начинается
+   за липкой первой колонкой: --fade-start — её ширина. */
+.ref .tablewrap { --fade-start: 0px; }
+.ref .tablewrap.fade-right {
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - var(--space-7)), transparent);
+  mask-image: linear-gradient(to right, black calc(100% - var(--space-7)), transparent);
+}
+.ref .tablewrap.fade-left {
+  -webkit-mask-image: linear-gradient(to right, black var(--fade-start), transparent var(--fade-start), black calc(var(--fade-start) + var(--space-7)));
+  mask-image: linear-gradient(to right, black var(--fade-start), transparent var(--fade-start), black calc(var(--fade-start) + var(--space-7)));
+}
+.ref .tablewrap.fade-left.fade-right {
+  -webkit-mask-image: linear-gradient(to right, black var(--fade-start), transparent var(--fade-start), black calc(var(--fade-start) + var(--space-7)), black calc(100% - var(--space-7)), transparent);
+  mask-image: linear-gradient(to right, black var(--fade-start), transparent var(--fade-start), black calc(var(--fade-start) + var(--space-7)), black calc(100% - var(--space-7)), transparent);
+}
+
+/* Доля полосой от лидера и слот изменения. */
+.ref-barcell { width: 1%; }
+.ref-bar { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-2); }
+.ref-bar-track { display: block; width: var(--size-ref-bar); height: var(--size-ref-bar-h); border-radius: var(--radius-ref-bar); background: var(--color-bg-card); overflow: hidden; }
+.ref-bar-track i { display: block; height: 100%; background: var(--color-bg-tertiary); }
+.ref-bar-track i.own { background: var(--color-bg-accent); }
+.ref-bar-v { min-width: var(--size-ref-num); text-align: right; }
+.ref-slot { display: inline-block; min-width: var(--size-ref-slot); margin-left: var(--space-2); text-align: left; font: 500 12px/1 var(--font-family-text); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ref-bar .ref-slot { margin-left: 0; }
+
+/* Изменение доли полосой от нуля. */
+.ref-table th.ref-gl { min-width: calc(var(--size-ref-diverge) + 4 * var(--space-6)); }
+.ref-diverge { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-2); }
+.ref-diverge-track { position: relative; display: block; width: var(--size-ref-diverge); height: var(--size-ref-bar-h); border-radius: var(--radius-ref-bar); background: var(--color-bg-card); }
+.ref-diverge-track::after { content: ""; position: absolute; left: 50%; top: calc(-1 * var(--space-1)); bottom: calc(-1 * var(--space-1)); width: 1px; background: var(--color-text-tertiary); }
+.ref-diverge-track i { position: absolute; top: 0; bottom: 0; }
+.ref-diverge-track i.down { right: 50%; background: var(--color-bg-danger-strong); }
+.ref-diverge-track i.up { left: 50%; background: var(--color-status-success); }
+.ref-diverge-v { min-width: calc(var(--size-ref-num) + var(--space-4)); text-align: right; font: 500 12px/1 var(--font-family-text); font-variant-numeric: tabular-nums; }
+
+/* Отношение к 100% маленькой полосой: маржа в P&L, вес свойства. */
+.ref-ratio { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-2); }
+.ref-ratio-track { display: block; width: var(--size-ref-bar-sm); height: var(--size-ref-bar-h-sm); border-radius: var(--radius-ref-bar); background: var(--color-bg-card); overflow: hidden; }
+.ref-ratio-track i { display: block; height: 100%; background: var(--color-bg-secondary); }
+.ref-weight .ref-ratio-track { width: var(--size-ref-bar); height: var(--size-ref-bar-h); }
+.ref-weight .ref-ratio-track i { background: var(--color-bg-tertiary); }
+
+/* P&L: промежуточные итоги на Panel-2, операционная прибыль на Ash. */
+.ref .tablewrap.sticky-first tbody tr.ref-pl-subtotal:nth-child(n) td, .ref-pl-subtotal td { background: var(--color-bg-data); font-weight: 600; }
+.ref .tablewrap.sticky-first tbody tr.ref-pl-total:nth-child(n) td, .ref-pl-total td { background: var(--color-bg-card); font-weight: 600; }
+.ref-pl td.ref-pl-unit { color: var(--color-text-tertiary); }
+.ref-pl .ref-pl-subtotal td.ref-pl-unit, .ref-pl .ref-pl-total td.ref-pl-unit { color: var(--color-text-secondary); }
+.ref-pl-ratio td { color: var(--color-text-secondary); }
+
+/* Плитки фактов сегмента — .stat кита. Значения стоят сразу под названием,
+   подписи мелко под значениями: зазор до подписи меньше, чем до названия. */
+.ref-facts { display: grid; gap: var(--space-3); margin-bottom: var(--space-5); }
+.ref-facts.results { grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr)); }
+.ref-facts.market { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 2fr); }
+@container ref (max-width: 899px) {
+  .ref-facts.results, .ref-facts.market { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ref-facts .ref-multi { grid-column: 1 / -1; }
+}
+.ref-facts .stat { gap: var(--space-3); min-width: 0; }
+.ref-facts .stat .v { margin-top: 0; padding-top: 0; white-space: nowrap; }
+.ref-pairs { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); }
+.ref-pair-k { font: 400 12px/16px var(--font-family-text); color: var(--color-text-tertiary); }
+
+/* Табы сегментов рядом с заголовком панели. */
+.ref-seg-tabs { display: inline-flex; }
+
+/* Гипотезы и факты о долях: гантели. Кружок — гипотеза, точка Ember — факт. */
+.ref-dumb { display: grid; grid-template-columns: auto auto minmax(calc(2 * var(--size-ref-bar)), 1fr) repeat(3, auto); overflow-x: auto; }
+.ref-dumb-row { display: contents; }
+.ref-dumb-row > span { display: flex; align-items: center; min-height: var(--space-5); padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--color-border-soft); }
+.ref-dumb-row > .num { justify-content: flex-end; font-variant-numeric: tabular-nums; }
+.ref-dumb-row.head > span { background: var(--color-bg-card); border-bottom: 0; font: 600 12px/15px var(--font-family-text); text-transform: uppercase; letter-spacing: .08em; color: var(--color-text-secondary); }
+.ref-dumb-row.head > span:first-child { border-radius: var(--radius-xs) 0 0 var(--radius-xs); }
+.ref-dumb-row.head > span:last-child { border-radius: 0 var(--radius-xs) var(--radius-xs) 0; }
+.ref-dumb-row.first:not(:nth-child(2)) > span { border-top: 1px solid var(--color-border-default); }
+.ref-dumb-row:not(.head):not(.scale):is(:hover, [data-force~="hover"]) > span { background: var(--color-bg-data); }
+.ref-dumb-brand { font-weight: 600; }
+.ref-dumb-row.scale > span { min-height: var(--space-5); padding: 0; border-bottom: 0; }
+.ref-dumb-track, .ref-dumb-ticks { position: relative; }
+.ref-dumb-track::before { content: ""; position: absolute; left: var(--space-3); right: var(--space-3); top: 50%; height: 1px; background: var(--color-border-default); }
+.ref-dumb-link { position: absolute; top: 50%; height: 3px; transform: translateY(-50%); left: calc(var(--space-3) + (100% - 2 * var(--space-3)) * var(--x0)); width: calc((100% - 2 * var(--space-3)) * (var(--x1) - var(--x0))); background: var(--color-border-control); }
+.ref-dumb-guess, .ref-dumb-fact { position: absolute; top: 50%; left: calc(var(--space-3) + (100% - 2 * var(--space-3)) * var(--x)); width: var(--size-ref-dot-lg); height: var(--size-ref-dot-lg); box-sizing: border-box; border-radius: 50%; transform: translate(-50%, -50%); cursor: default; }
+.ref-dumb-guess { background: var(--color-bg-surface); border: 2px solid var(--color-text-primary); }
+.ref-dumb-fact { background: var(--color-bg-accent); }
+.ref-dumb-ticks span { position: absolute; top: var(--space-1); left: calc(var(--space-3) + (100% - 2 * var(--space-3)) * var(--x)); transform: translateX(-50%); font: 400 12px/16px var(--font-family-text); color: var(--color-text-tertiary); font-variant-numeric: tabular-nums; }
+
+/* Что сделали конкуренты: колонки группы одной ширины. */
+.ref-comp .ref-col-seg { width: var(--size-ref-col-seg); }
+.ref-comp .ref-col-channel { width: var(--size-ref-col-channel); }
+.ref-table td.ref-profile { white-space: normal; min-width: var(--size-ref-profile-min); max-width: var(--size-ref-profile-max); font: 400 12px/16px var(--font-family-text); color: var(--color-text-secondary); }
+.ref-table td.ref-profile.ref-statement { min-width: var(--size-ref-statement); max-width: var(--size-ref-statement); }
+
+/* Бренды рынка: 13 колонок — поля и полосы ужаты. На Full HD при 125%
+   таблица входит целиком, уже — прокручивается с прилипшим брендом. */
+.ref-market th, .ref-market td { padding-left: var(--space-2); padding-right: var(--space-2); }
+.ref-market .ref-gs { padding-left: var(--space-4); }
+.ref-market .ref-bar-track { width: var(--size-ref-bar-sm); }
+.ref-market .ref-bar-v { min-width: calc(var(--size-ref-num) - var(--space-2)); }
+.ref-market .ref-diverge-track { width: var(--size-ref-diverge-sm); }
+.ref-market .ref-diverge-v { min-width: calc(var(--size-ref-num) + var(--space-1)); }
+.ref-market th.ref-gl { min-width: 0; }
+
+/* Идеальный профиль: текущий год подсвечен, план — вторичным текстом. */
+.ref-ideal th.ref-cur { background: var(--color-border-control); color: var(--color-text-primary); }
+.ref-ideal td.ref-cur { background: var(--color-bg-data); font-weight: 600; }
+.ref-ideal td.ref-plan { color: var(--color-text-secondary); }
+
+/* Brand equity index столбцами по шкале 0–100. */
+.ref-bei { display: grid; grid-template-columns: max-content minmax(0, 1fr) auto; column-gap: var(--space-4); align-items: center; }
+.ref-bei-scale { grid-column: 2; position: relative; height: var(--space-5); }
+.ref-bei-scale span { position: absolute; top: 0; transform: translateX(-50%); font: 400 12px/16px var(--font-family-text); color: var(--color-text-tertiary); }
+.ref-bei-row { display: contents; }
+.ref-bei-name { grid-column: 1; padding: var(--space-1) 0; }
+.ref-bei-row.own .ref-bei-name { font-weight: 600; }
+.ref-bei-track { position: relative; height: var(--space-6); background: linear-gradient(to right, var(--color-border-soft) 1px, transparent 1px) 0 0 / 25% 100%; }
+.ref-bei-track i { position: absolute; left: 0; top: 50%; height: var(--size-ref-split); transform: translateY(-50%); border-radius: 0 var(--radius-ref-bar) var(--radius-ref-bar) 0; background: var(--color-border-control); }
+.ref-bei-row.own .ref-bei-track i { background: var(--color-bg-accent); }
+.ref-bei-v { position: absolute; top: 50%; transform: translate(var(--space-2), -50%); font: 600 12px/1 var(--font-family-text); font-variant-numeric: tabular-nums; }
+.ref-bei-d { text-align: right; font: 500 12px/1 var(--font-family-text); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* ---------- command bar ---------- */
+
+.command-bar {
+  position: fixed; left: 0; right: var(--peek-w, 0px); bottom: 0; z-index: 40;
+  transform: none;
+  /* --shell-w-bordered: --shell-w + 2 px собственных границ: контент внутри ложится ровно на карточки */
+  width: auto; max-width: var(--size-shell-bordered);
+  margin: 0 auto;
+  display: flex; flex-direction: column;
+  /* Правка 4: полоса сама себе контейнер запроса. Она fixed и её правый край
+     привязан к --peek-w, то есть при открытой панели она уже окна — а
+     контейнер `deck` (.cards) на неё не распространяется, полоса лежит вне
+     него. Своего контейнера хватает: перестроение зависит ровно от ширины
+     полосы, а не от ширины окна. */
+  container-type: inline-size; container-name: bar;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default); border-bottom: 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+/* верхний ярус: прогноз таблицей и четыре показателя вилки */
+/* Верхний ярус полосы. Был объявлен дважды, и второе объявление меняло
+   выравнивание и зазор первого. Сложено — но второе объявление жило внутри
+   @container bar (узкая полоса), и при сложении его выравнивание по верху
+   ушло и в широкий режим: заголовок «Прогноз» вставал выше центра карточек.
+   Широкий режим — по центру, зазор 24; узкий — ниже, в @container. */
+.cb-top {
+  display: flex; align-items: center; gap: var(--space-6);
+  padding: var(--space-3) var(--space-5) var(--space-2);
+  box-shadow: inset 0 -1px 0 var(--color-border-default);
+}
+/* Прогноза нет: одна строка вместо вилки, отбитая той же линией слева, что и
+   карточки вилки. Строка короче вилки — ярус держит равные поля сверху и
+   снизу и центрирует заголовок по ней. */
+.cb-top.empty { align-items: center; padding-bottom: var(--space-3); }
+.cb-top-empty {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-1) 0 var(--space-1) var(--space-3);
+  border-left: 1px solid var(--color-border-soft);
+  font: 400 12px/15px var(--font-family-text); color: var(--color-text-secondary);
+}
+/* у текстовой кнопки по умолчанию margin-left: auto — здесь она идёт за текстом */
+.cb-top-empty .word-btn { margin-left: 0; }
+.fc-title { display: inline-flex; align-items: center; gap: 6px; }
+.fc-head-line { display: flex; align-items: center; gap: 8px; }
+.fc-cards, .fc-tiles { display: flex; gap: 8px; }
+.fc-tiles { margin-left: auto; }
+/* Карточка вилки прогноза — одна деталь на деньги и на показатели разброса.
+   Минимальную ширину задаёт ряд, в котором она стоит: вилке денег нужно
+   место под диапазон, плитке разброса — под одно число. Это раскладка ряда,
+   а не форма карточки, поэтому модификатора у неё нет. */
+.fc-card {
+  display: flex; flex-direction: column; gap: 2px;
+  min-width: 172px;
+  padding: 4px 0 4px 12px; border-left: 1px solid var(--color-border-soft);
+}
+.fc-tiles .fc-card { min-width: 84px; }
+.fc-k { display: inline-flex; align-items: center; gap: 4px; font: 400 12px/15px var(--font-family-text); color: var(--color-text-secondary); }
+.fc-v { font: 600 14px/19px var(--font-family-text); color: var(--color-text-primary); font-variant-numeric: tabular-nums; }
+
+/* Правка 4: в двухоконном режиме прогноз перестраивается в две колонки —
+   деньги строками слева, показатели разброса строками справа. В одну линию
+   всё это помещается от 1050 px: подпись ~70 + три карточки по 172 + четыре
+   плитки по 84 + зазоры (24+24+8·5) + падинги полосы 40. Ниже — карточки и
+   плитки ложатся столбцами, а название и значение внутри каждой встают в
+   строку, иначе семь подписей съедают высоту, которой у полосы нет. */
+@container bar (max-width: 1050px) {
+  .cb-top { align-items: flex-start; gap: var(--space-4); flex-wrap: wrap; }
+  /* заголовок по центру первой строки: строка 23 px, заголовок 15 px */
+  .cb-top .fc-head-line { padding-top: var(--space-1); }
+  .fc-cards, .fc-tiles { flex-direction: column; gap: 4px; flex: 1 1 0; min-width: 0; }
+  .fc-card, .fc-tiles .fc-card {
+    flex-direction: row; align-items: baseline; justify-content: space-between;
+    gap: 12px; min-width: 0; padding: 2px 0 2px 12px;
+  }
+}
+
+/* нижний ярус: бюджет, проверка и запуск. §8: плашка бюджета отбита от
+   верхнего яруса (вилки прогноза, если он есть) собственной поверхностью,
+   а не только линией. Полоса стоит на нижнем крае окна — нижних скруглений
+   у яруса нет.
+
+   Раскладка (Paper, «Полоса управления · правка»): слева колонка бюджета —
+   деньги строкой, под ними шкала на всю ширину; линия; справа капсула, в
+   которой проверка и запуск живут вместе. Высота яруса 72: поле 12 + капсула
+   48 (кнопка 40 и внутреннее поле 4) + поле 12. */
+.cb-bottom {
+  display: flex; align-items: center; gap: var(--space-6);
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-bg-card);
+}
+/* Верхнего яруса нет (пробный год сыгран или версия прогноза new): плашка
+   сама стоит под скруглённым верхом полосы и повторяет его изнутри рамки,
+   иначе её прямые углы торчат за скругление. overflow у полосы не режем —
+   над ней открывается поповер. */
+.cb-bottom:first-child { border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0; }
+.cb-budget { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+/* Не влезают в строку — на следующую уходит пара целиком: сумма
+   неразрывна, «₽» от числа не отрывается. */
+.cb-money { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-6); }
+.cb-pair { display: flex; align-items: baseline; gap: var(--space-1); white-space: nowrap; }
+/* подпись суммы — типографика метки (h3), тон третьей ступени */
+.cb-k {
+  font: 600 12px/15px var(--font-family-text);
+  text-transform: uppercase; letter-spacing: .08em;
+  color: var(--color-text-tertiary);
+}
+.cb-money b { font: 600 12px/16px var(--font-family-text); color: var(--color-text-primary); font-variant-numeric: tabular-nums; }
+.cb-money b.over { color: var(--color-text-danger); }
+/* Шкала — атом «Шкала» (кит). Ширину задаёт контейнер; заливок может быть
+   несколько подряд, поэтому дорожка — флекс-ряд. */
+.cb-meter { display: flex; height: var(--space-2); background: var(--color-bg-slider-track); border-radius: var(--radius-pill); overflow: hidden; }
+.cb-meter i { display: block; flex: none; height: 100%; background: var(--color-bg-accent); }
+.cb-meter.over i { background: var(--color-bg-danger-strong); }
+.cb-rule { flex: none; align-self: stretch; width: 1px; background: var(--color-border-soft); }
+/* Пробный год сыгран: на месте денег — что дальше. Заголовок набран как
+   значение вилки прогноза (.fc-v), пояснение — .sub. */
+.cb-note { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: var(--space-1); }
+.cb-note b { font: 600 14px/19px var(--font-family-text); color: var(--color-text-primary); }
+.cb-note .sub { margin: 0; }
+/* Капсула: подложка несёт тяжесть проверки — белая, когда чисто, мягкий
+   жёлтый при предупреждениях, мягкий красный при ошибках. Насыщенный тон
+   остаётся у чипа-счётчика внутри. */
+.cb-run {
+  position: relative;
+  flex: none; display: flex; align-items: center; gap: var(--space-4);
+  padding: var(--space-1) var(--space-1) var(--space-1) var(--space-6);
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-pill);
+}
+/* Капсула с одной кнопкой (пробный год сыгран): надписи слева нет, поле
+   со всех сторон одно — иначе у кнопки остаётся пустой белый хвост. */
+.cb-run.solo { padding: var(--space-1); }
+.cb-run.warning { background: var(--color-bg-warning-soft); }
+.cb-run.danger { background: var(--color-bg-danger-soft); }
+.cb-checks { display: flex; align-items: center; gap: var(--space-2); font-size: 12px; color: var(--color-text-secondary); }
+/* Кнопка «Ошибки» — вся левая часть капсулы: забирает её поле слева и
+   высоту, снаружи выглядит как прежняя надпись с чипом. Под курсором
+   бледнеет целиком, как нажимаемый чип (button.chip). */
+button.cb-checks {
+  align-self: stretch; height: auto;
+  margin-left: calc(-1 * var(--space-6)); padding: 0 0 0 var(--space-6);
+  border: 0; border-radius: var(--radius-pill) 0 0 var(--radius-pill); background: none;
+  font: inherit; font-size: 12px; color: var(--color-text-secondary);
+}
+button.cb-checks:is(:hover, [data-force~="hover"]) { background: none; opacity: .7; }
+/* Правка 8: тяжесть — фоном тега, а не точкой. Точка убрана из разметки. */
+.cb-pop { position: absolute; right: 0; bottom: calc(100% + var(--space-2)); width: 420px; max-height: 320px; overflow: auto; padding: var(--space-2) var(--space-3); background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-xs); box-shadow: var(--shadow-overlay); }
+.cb-pop .pop-title { font-weight: 600; margin-bottom: 6px; }
+/* Заголовки групп «Блокируют запуск» / «Не блокируют запуск». */
+.cb-pop .pop-group-head {
+  margin: 10px 0 2px;
+  font: 600 12px/15px var(--font-family-text); letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary);
+}
+.cb-pop .pop-group-head:first-of-type { margin-top: 4px; }
+.cb-pop .pop-item { display: flex; height: auto; white-space: normal; justify-content: flex-start; gap: 8px; padding: 8px 0; border: 0; box-shadow: inset 0 -1px 0 var(--color-border-soft); font-size: 12px; text-align: left; width: 100%; background: none; cursor: pointer; }
+.cb-pop .pop-item:last-child { box-shadow: none; }
+.cb-pop .pop-item i { flex: none; width: 6px; height: 6px; margin-top: 6px; border-radius: var(--radius-pill); }
+.cb-pop .pop-item.err i { background: var(--color-bg-danger-strong); }
+.cb-pop .pop-item.warn i { background: var(--color-status-warning); }
+.cb-save { font-size: 12px; color: var(--color-text-tertiary); }
+
+@media (max-width: 1024px) {
+  .brand-card.bc2 { flex-direction: column; }
+  /* Н1: белая панель живёт в лотке .bc-right — во всю ширину тянется лоток,
+     а панель — внутри него */
+  .bc-right, .bc-edit { width: 100%; }
+  /* та же тройка «подпись сверху, контрол на всю ширину»,
+     что и у @container deck выше, снята и здесь — см. комментарий там. */
+}
+
+/* ---------- Онбординг ---------- */
+
+/* Онбординг пробного года (onboarding-ui.js): плашка заданий 1Б и модалка
+   этапа 2А, утверждены в компаньоне. Кегли компаньона, которых нет в
+   шкале набора, сведены к ближайшим ступеням: 11 → 12, 13 → 14, 15 → 17,
+   22 → 24. */
+
+/* номер задания и места: кружок 22 px, три состояния */
+.onb-n {
+  width: var(--size-control-xs); height: var(--size-control-xs); flex: none;
+  display: grid; place-items: center;
+  border: 1px solid var(--color-border-strong); border-radius: var(--radius-pill);
+  font-size: 12px; font-weight: 500; line-height: 1;
+}
+.onb-cap { font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-secondary); }
+
+/* Плашка 1Б: тёмная, справа внизу над полосой управления. --cb-h — высота
+   полосы (unitpl.js), без полосы — 0. Выше панели обзора (50), ниже модалок (70). */
+.onb-tray {
+  position: fixed; right: var(--space-6); bottom: calc(var(--cb-h, 0px) + var(--space-4)); z-index: 60;
+  display: flex; flex-direction: column; align-items: flex-end;
+}
+.onb-tray[hidden] { display: none; }
+.onb-tray-panel {
+  width: var(--size-onb-tray); max-width: calc(100vw - 2 * var(--space-6));
+  max-height: calc(100vh - var(--cb-h, 0px) - 2 * var(--space-6)); overflow-y: auto;
+  display: flex; flex-direction: column; gap: var(--space-3);
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  background: var(--color-bg-tooltip); color: var(--color-text-inverse);
+  border-radius: var(--radius-md); box-shadow: var(--shadow-overlay);
+}
+/* без подписи этапа: полоска этапов, затем счёт заданий и «свернуть» */
+.onb-tray-head { display: flex; align-items: center; gap: var(--space-2); }
+.onb-tray-title { flex: 1; min-width: 0; font-size: 17px; font-weight: 600; line-height: 1.2; }
+.onb-tray-fold {
+  width: var(--size-control-sm); padding: 0;
+  background: transparent; border-color: var(--color-border-inverse); color: var(--color-text-inverse-secondary);
+}
+.onb-tray-fold:is(:hover, [data-force~="hover"]) { background: var(--color-bg-inverse-soft); color: var(--color-text-inverse); }
+
+.onb-tasks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.onb-task {
+  display: grid; grid-template-columns: var(--size-control-xs) minmax(0, 1fr); gap: var(--space-3);
+  padding: var(--space-3) 0; border-top: 1px solid var(--color-border-inverse);
+}
+.onb-task:first-child { border-top: 0; padding-top: 0; }
+.onb-task:last-child { padding-bottom: 0; }
+.onb-task p { margin: 0; font-size: 14px; font-weight: 500; line-height: 1.4; }
+.onb-task small { display: block; font-size: 12px; line-height: 1.4; color: var(--color-text-inverse-secondary); }
+.onb-task.wait p { font-weight: 400; color: var(--color-text-inverse-tertiary); }
+.onb-tray .onb-n { border-color: var(--color-text-inverse-secondary); }
+.onb-tray .onb-n.now { background: var(--color-bg-surface); border-color: var(--color-bg-surface); color: var(--color-text-strong); }
+.onb-tray .onb-n.done { background: var(--color-text-success); border-color: var(--color-text-success); color: var(--color-text-inverse); }
+.onb-tray .onb-n.wait { border-color: var(--color-border-inverse); color: var(--color-text-inverse-tertiary); }
+
+/* подсказка при ошибке — только у текущего задания */
+.onb-hint {
+  margin-top: var(--space-2); padding: var(--space-2) var(--space-3);
+  background: var(--color-bg-warning-soft); border-radius: var(--radius-xs);
+  font-size: 12px; line-height: 1.4; color: var(--color-text-primary);
+}
+.onb-hint b { display: block; font-weight: 600; color: var(--color-text-warning); }
+
+/* «Далее» под текстом текущего задания. Пока
+   задание не выполнено — приглушена (aria-disabled, не disabled: нажатие
+   показывает подсказку над кнопкой). */
+.onb-next { position: relative; margin-top: var(--space-2); }
+.onb-tray button.primary[aria-disabled="true"],
+.onb-tray button.primary[aria-disabled="true"]:is(:hover, [data-force~="hover"]) {
+  background: var(--color-bg-inverse-soft); color: var(--color-text-inverse-tertiary); cursor: not-allowed;
+}
+.onb-next-tip {
+  position: absolute; left: 0; bottom: calc(100% + var(--space-2)); white-space: nowrap;
+  padding: var(--space-2) var(--space-3); border-radius: var(--radius-xs);
+  background: var(--color-bg-surface); color: var(--color-text-strong);
+  font-size: 12px; font-weight: 500; line-height: 1.4; box-shadow: var(--shadow-overlay);
+}
+
+/* свёрнутая плашка — тёмный чип */
+.onb-chip {
+  padding: 0 var(--space-4) 0 var(--space-2);
+  background: var(--color-bg-tooltip); border-color: var(--color-bg-tooltip); color: var(--color-text-inverse);
+  box-shadow: var(--shadow-overlay);
+}
+.onb-chip .onb-n { background: var(--color-bg-surface); border-color: var(--color-bg-surface); color: var(--color-text-strong); }
+
+/* полоска этапов 1–8 — первой строкой плашки */
+.onb-steps { display: flex; gap: var(--space-1); }
+.onb-steps i { flex: 1; height: var(--space-1); border-radius: var(--radius-pill); background: var(--color-border-inverse); }
+.onb-steps i.on { background: var(--color-bg-surface); }
+
+
+/* Модалка этапа 2А: механизм и скрим .modal, вид .panel, шире обычного диалога */
+.modal .panel.onb-dlg {
+  width: var(--size-onb-dialog); max-width: calc(100vw - 2 * var(--space-6));
+  max-height: calc(100vh - 2 * var(--space-6)); overflow-y: auto;
+  margin: 0; padding: var(--space-6);
+  display: flex; flex-direction: column; gap: var(--space-4);
+  box-shadow: var(--shadow-overlay);
+}
+.onb-dlg h2 { margin: 0; font-size: 24px; font-weight: 600; line-height: 1.2; }
+.onb-dlg p { margin: 0; }
+/* окно широкое ради снимка — строки текста держим читаемой длины */
+.onb-dlg > p, .onb-dlg > .onb-places, .onb-dlg > .onb-conds { max-width: 72ch; }
+/* flex: none — окно выше экрана прокручивается, снимок не сжимается и не обрезается */
+.onb-shot { flex: none; border: 1px solid var(--color-border-default); border-radius: var(--radius-xs); overflow: hidden; background: var(--color-bg-card); }
+.onb-shot[hidden] { display: none; }
+.onb-shot img { display: block; width: 100%; height: auto; }
+.onb-places { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.onb-places li { display: grid; grid-template-columns: var(--size-control-xs) minmax(0, 1fr); gap: var(--space-3); }
+.onb-places b { font-weight: 600; }
+/* номер места — как метка на снимке (onboarding_shots.py): заливка акцентом,
+   белая цифра */
+.onb-places .onb-n { background: var(--color-bg-accent); border-color: var(--color-bg-accent); color: var(--color-text-on-accent); font-weight: 600; }
+/* место без метки на снимке — точка в колонке кружков, как маркер списка условий */
+.onb-bullet { width: var(--size-control-xs); height: var(--size-control-xs); display: grid; place-items: center; }
+.onb-bullet::before { content: ""; width: var(--space-1); height: var(--space-1); border-radius: var(--radius-pill); background: currentColor; }
+.onb-conds { display: flex; flex-direction: column; gap: var(--space-2); padding-top: var(--space-3); border-top: 1px solid var(--color-border-soft); }
+.onb-conds ul { margin: 0; padding: 0 0 0 var(--space-4); display: flex; flex-direction: column; gap: var(--space-1); }
+.onb-dlg-foot { display: flex; align-items: center; gap: var(--space-3); }
+
+/* Окна онбординга (#onbModal) — под обычными диалогами (#modal, z 70):
+   подтверждение пропуска 4Б открывается поверх брифинга и модалки этапа. */
+#onbModal { z-index: 69; }
+/* окно онбординга открыто — страница под ним не прокручивается; своя
+   прокрутка окна не уходит на страницу */
+:root[data-onb-modal] { overflow: hidden; }
+#onbModal .onb-dlg { overscroll-behavior: contain; }
+
+/* Брифинг 5Б: лист на весь экран, интерфейса под ним не видно. Кегли
+   компаньона сведены к шкале: заголовок 72 → 50 (Display, верх шкалы),
+   карточка 28 → 29, текст 15 → 17, имя бренда 30 → 29, цена 18 → 17,
+   описание 13 → 14. */
+.onb-sheet {
+  position: fixed; inset: 0;
+  display: grid; grid-template-columns: var(--size-onb-brief-rail) minmax(0, 1fr);
+  background: var(--color-bg-surface); overflow-y: auto;
+}
+.onb-sheet-l {
+  padding: calc(2 * var(--space-7)) calc(2 * var(--space-6));
+  display: flex; flex-direction: column; gap: var(--space-6);
+  border-right: 1px solid var(--color-border-default);
+}
+.onb-sheet-title { margin: 0; font: 700 50px/1 var(--font-family-display); letter-spacing: .02em; text-transform: uppercase; color: var(--color-text-strong); }
+.onb-steplist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+.onb-steplist li {
+  display: grid; grid-template-columns: var(--size-control-xs) minmax(0, 1fr); gap: var(--space-3); align-items: center;
+  font-size: 14px; color: var(--color-text-tertiary);
+}
+.onb-steplist li.now { color: var(--color-text-primary); font-weight: 600; }
+.onb-steplist li.done { color: var(--color-text-secondary); }
+.onb-steplist .onb-n.done { background: var(--color-text-success); border-color: var(--color-text-success); color: var(--color-text-inverse); }
+.onb-steplist .onb-n.now { background: var(--color-bg-strong); border-color: var(--color-bg-strong); color: var(--color-text-inverse); }
+.onb-steplist .onb-n.wait { border-color: var(--color-border-default); color: var(--color-text-tertiary); }
+.onb-sheet-r {
+  max-width: var(--size-onb-brief-card); padding: calc(2 * var(--space-7));
+  display: flex; flex-direction: column; justify-content: center; gap: var(--space-5);
+}
+.onb-sheet-r h2 { margin: 0; font-size: 29px; font-weight: 600; line-height: 1.2; }
+.onb-sheet-r > p { margin: 0; font-size: 17px; line-height: 1.45; max-width: 60ch; }
+/* название команды на первой карточке брифинга — вместо прежнего окна */
+.onb-sheet-r label.onb-team { max-width: var(--size-onb-team); margin: 0; font-size: 14px; }
+.onb-team input { height: var(--size-control); }
+.onb-team-note { font-size: 12px; color: var(--color-text-tertiary); }
+.onb-team .issue { margin: 0; }
+.onb-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
+.onb-tile {
+  display: flex; flex-direction: column; gap: var(--space-2);
+  padding: var(--space-5); background: var(--color-bg-card); border-radius: var(--radius-md);
+}
+.onb-bname { font: 700 29px/1 var(--font-family-display); letter-spacing: .02em; text-transform: uppercase; color: var(--color-text-strong); }
+.onb-tile-v { font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.onb-tile p { margin: 0; font-size: 14px; color: var(--color-text-secondary); }
+
+/* Окно 7А «Пробный год окончен» — вид подтверждения (ширина .modal .panel). */
+.modal .panel.onb-final { margin: 0; padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-4); box-shadow: var(--shadow-overlay); }
+.onb-final h2, .onb-final p { margin: 0; }
+
+/* Выноска у «Досье»: тёмный тултип под кнопкой, стрелка над её серединой
+   (--onb-callout-arrow ставит onboarding-ui.js). Выше панели обзора и
+   плашки, ниже окон. */
+.onb-callout {
+  position: fixed; z-index: 65;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg-tooltip); color: var(--color-text-inverse);
+  border-radius: var(--radius-xs); box-shadow: var(--shadow-overlay);
+  font-size: 14px; line-height: 1.4; white-space: nowrap;
+}
+.onb-callout[hidden] { display: none; }
+.onb-callout::before {
+  content: ""; position: absolute; top: calc(var(--space-3) / -2);
+  right: calc(var(--onb-callout-arrow, var(--space-6)) - var(--space-3) / 2);
+  width: var(--space-3); height: var(--space-3);
+  background: var(--color-bg-tooltip); transform: rotate(45deg);
+}
+
+/* «Досье» 6А: шторка справа во всю высоту, ширина — .modal.drawer .panel.
+   Кегли компаньона сведены к шкале: заголовок 36 → 35 (Display Title),
+   сегмент 16 → 17, текст 13 → 14. */
+.modal.drawer .panel.dossier {
+  align-self: stretch; margin: 0 0 0 auto; max-width: 100vw;
+  padding: var(--space-7) var(--space-6);
+  display: flex; flex-direction: column; gap: var(--space-5);
+  border: 0; border-radius: 0; box-shadow: var(--shadow-overlay);
+}
+.dossier-head { display: flex; align-items: center; gap: var(--space-3); }
+.dossier-head h2 { flex: 1; margin: 0; font: 700 35px/1 var(--font-family-display); letter-spacing: .02em; text-transform: uppercase; color: var(--color-text-strong); }
+/* вкладки — капсула компаньона: пять табов в одну строку шторки */
+.tabs.dossier-tabs {
+  align-self: flex-start; flex-wrap: nowrap; padding: var(--space-1);
+  background: var(--color-bg-surface); border-color: var(--color-border-default); border-radius: var(--radius-pill);
+}
+.dossier-body { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: var(--space-4); }
+.dossier-body p { margin: 0; }
+.dossier-lead { font-size: 14px; line-height: 1.45; }
+.dossier-list { display: flex; flex-direction: column; gap: var(--space-3); }
+.dossier-card {
+  display: flex; flex-direction: column; gap: var(--space-2);
+  padding: var(--space-4); border: 1px solid var(--color-border-default); border-radius: var(--radius-xs);
+}
+.dossier-card h3 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: normal; text-transform: none; color: var(--color-text-primary); }
+.dossier-card p { font-size: 14px; color: var(--color-text-secondary); }
+.dossier-cap { font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-secondary); margin-top: var(--space-1); }
+.dossier-kv { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
+.dossier-kv span { display: flex; flex-direction: column; gap: var(--space-1); font-size: 12px; color: var(--color-text-secondary); }
+.dossier-kv b { font-size: 14px; font-weight: 600; color: var(--color-text-primary); font-variant-numeric: tabular-nums; }
+.dossier-brand-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); }
+.dossier-bname { font: 700 24px/1 var(--font-family-display); letter-spacing: .02em; text-transform: uppercase; color: var(--color-text-strong); }
+.dossier-price { font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.dossier-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.dossier-rows li { display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-2) 0; border-top: 1px solid var(--color-border-soft); }
+.dossier-rows li:first-child { border-top: 0; padding-top: 0; }
+.dossier-row-head { display: flex; justify-content: space-between; gap: var(--space-3); font-size: 14px; font-variant-numeric: tabular-nums; }
+.dossier-row-head b { font-weight: 600; }
+.dossier-bullets { margin: 0; padding: 0 0 0 var(--space-4); display: flex; flex-direction: column; gap: var(--space-1); font-size: 14px; }
+.dossier-stage .onb-places { font-size: 14px; }
+.dossier-foot { font-size: 12px; color: var(--color-text-tertiary); }

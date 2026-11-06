@@ -1,0 +1,408 @@
+/* BrandSim UI-кит — оформление самой страницы (ветка kit-shell).
+ *
+ * Правило для этого файла: ни одного hex, ни одного имени шрифта, ни одного
+ * размера мимо шкалы DESIGN.md. Всё берётся из :root, объявленного в
+ * styles.css, — кит обязан жить по той же системе, которую показывает.
+ *
+ * Исключение одно и оно объявлено: отступы. Токенов отступа в проекте нет
+ * (DESIGN.md → Долг по шкале), поэтому локальная шкала объявлена здесь
+ * одним блоком. Когда ветка foundation заведёт общие токены, этот блок
+ * заменяется ссылками на них — правка в одном месте, а не по всему файлу.
+ */
+
+.k-body {
+  background: var(--color-bg-card);
+  padding-bottom: var(--space-7);
+}
+
+/* ---------- шапка ---------- */
+
+.k-top {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: baseline; gap: var(--space-3);
+  height: 52px; padding: 0 var(--space-6);
+  background: var(--color-bg-surface);
+  border-bottom: 1px solid var(--color-border-default);
+}
+.k-top h1 { font: 400 20px/1 var(--font-family-display); letter-spacing: .03em; text-transform: uppercase; margin: 0; }
+
+/* ---------- каркас ---------- */
+
+.k-shell {
+  display: grid;
+  grid-template-columns: var(--size-kit-rail) minmax(0, 1fr);
+  gap: var(--space-6);
+  max-width: var(--size-shell);
+  margin: 0 auto;
+  padding: var(--space-6);
+}
+
+.k-rail {
+  position: sticky; top: calc(52px + var(--space-6));
+  align-self: start;
+  max-height: calc(100vh - 52px - var(--space-7));
+  overflow: auto;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.k-link {
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-xs);
+  font: 500 14px/1.45 var(--font-family-text);
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+.k-link.k-sub { padding-left: var(--space-4); font-weight: 400; color: var(--color-text-secondary); }
+.k-link:is(:hover, [data-force~="hover"]) { background: var(--color-bg-surface); }
+
+.k-main { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+
+/* Иерархия страницы: часть → карточка → блок.
+   Часть отбита самым крупным заголовком дисплейным шрифтом — их всего две,
+   стайл-гайд и компоненты. Карточка — законченная мысль. Блок — смысловая
+   часть внутри карточки, отбивается разделителем. */
+.k-part {
+  margin: var(--space-7) 0 var(--space-4);
+  font: 700 50px/1 var(--font-family-display);
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: var(--color-text-strong);
+}
+.k-part:first-child { margin-top: 0; }
+
+.k-card-h {
+  margin: 0 0 var(--space-4);
+  font: 500 24px/1.2 var(--font-family-text);
+  color: var(--color-text-primary);
+}
+
+/* Заголовок блока НЕ повторяет заголовок ячейки таблицы: иначе два уровня
+   иерархии выглядят одинаково и перестают читаться как разные. Лестница
+   такая: часть 50 дисплейным → карточка 24 → блок 17 → шапка таблицы 12
+   капителью. */
+.k-sub-h {
+  display: flex; align-items: baseline; gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  font: 500 20px/1.3 var(--font-family-text);
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--color-text-primary);
+}
+
+.k-block { min-width: 0; }
+/* без разделителя блоки отбиваются воздухом */
+.k-card-body-blocks { display: flex; flex-direction: column; gap: var(--space-7); }
+.k-rule { height: 1px; background: var(--color-border-soft); margin: var(--space-6) 0; }
+
+
+
+/* ---------- карточка компонента ---------- */
+
+.k-card {
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  min-width: 0;
+}
+.k-card-head {
+  display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap;
+  margin-bottom: var(--space-2);
+}
+.k-card-head .k-sub-h { margin: 0; }
+.k-card-id { font: 400 12px/16px var(--font-family-text); color: var(--color-text-tertiary); }
+
+.k-modes { margin-left: auto; display: flex; gap: 2px; }
+.k-mode {
+  padding: var(--space-1) var(--space-3);
+  border: 0; border-radius: var(--radius-pill);
+  background: none;
+  font: 500 14px/1.45 var(--font-family-text);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+.k-mode.on { background: var(--color-bg-card); color: var(--color-text-primary); }
+
+.k-axes { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; width: 100%; }
+.k-axes-cap { font: 400 12px/16px var(--font-family-text); color: var(--color-text-tertiary); }
+.k-axis {
+  height: 28px; padding: 0 var(--space-6) 0 var(--space-2);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-control); border-radius: var(--radius-xs);
+  font: 400 12px/16px var(--font-family-text); color: var(--color-text-primary);
+  -webkit-appearance: none; appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--color-bg-tertiary) 50%),
+                    linear-gradient(135deg, var(--color-bg-tertiary) 50%, transparent 50%);
+  background-position: right 14px center, right 10px center;
+  background-size: 4px 4px, 4px 4px;
+  background-repeat: no-repeat;
+}
+
+.k-card-body { min-width: 0; overflow-x: auto; }
+
+/* ---------- матрица ---------- */
+
+.k-matrix {
+  display: grid;
+  grid-template-columns: max-content repeat(var(--k-cols, 1), minmax(0, 1fr));
+  align-items: stretch;
+  border-top: 1px solid var(--color-border-soft);
+  border-left: 1px solid var(--color-border-soft);
+  min-width: min-content;
+}
+/* Форсированный фокус на предке — двойник :focus-within, а не
+   :focus-visible. Так он и записан у поля с дорожкой (styles.css:482), и
+   движок обязан метить предка, иначе рамка фокуса не появится. Но глобальное
+   кольцо (styles.css:1036) отличить один двойник от другого не может и
+   обводит заодно и предка: у переключателя получалось два кольца сразу
+   (D3), у чипа — кольцо на <span>, который фокус принять не способен.
+   Различает кит: кольцо остаётся у того, кто фокус реально берёт.
+   Правило видит только узлы с data-force, то есть живёт исключительно на
+   странице кита — продукта оно не касается. */
+[data-force~="focus"]:not(a[href], button, input, select, textarea, [tabindex]) { outline: none; }
+
+/* Матрица без оси строк: у разделителя, метки и скелета нет ни опций, ни
+   состояний, у таба и селекта состояния стоят колонками, а опций нет. Столбец
+   подписей строк в этих случаях не заводится вовсе — пустая клетка читается
+   как потерянная подпись, а не как «подписывать нечем». */
+.k-matrix.k-no-rows { grid-template-columns: repeat(var(--k-cols, 1), minmax(0, 1fr)); }
+.k-m-corner { border-right: 1px solid var(--color-border-soft); border-bottom: 1px solid var(--color-border-soft); }
+.k-m-col,
+.k-m-row {
+  font: 600 12px/15px var(--font-family-text);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  padding: var(--space-2) var(--space-3);
+  border-right: 1px solid var(--color-border-soft);
+  border-bottom: 1px solid var(--color-border-soft);
+}
+/* Имя оси: над колонками — имя оси колонок, в углу — имя оси строк. Тот же
+   набор, что у значений строк, но тоном выше: имя читается раньше значений. */
+.k-m-axis {
+  font: 400 12px/16px var(--font-family-text);
+  color: var(--color-text-secondary);
+  padding: var(--space-2) var(--space-3);
+  border-right: 1px solid var(--color-border-soft);
+  border-bottom: 1px solid var(--color-border-soft);
+}
+/* Значения осей — одним набором в шапке и в строках: подписи колонок больше
+   не капсом, иначе «hover» над колонкой и «on» у строки читались бы как
+   подписи разного рода. */
+.k-m-col,
+.k-m-row {
+  text-transform: none; letter-spacing: 0;
+  font: 400 12px/16px var(--font-family-text);
+  white-space: nowrap;
+  align-self: stretch;
+  display: flex; align-items: center;
+}
+.k-m-group {
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-bg-card);
+  font: 600 12px/16px var(--font-family-text);
+  color: var(--color-text-secondary);
+  border-right: 1px solid var(--color-border-soft);
+  border-bottom: 1px solid var(--color-border-soft);
+}
+/* display:block, а не flex: половина компонентов продукта носит
+   margin-left:auto (.btn-edit прижат к правому краю строки свойства,
+   .word-btn — к правому краю подписи поля). Во flex-ячейке это уводило
+   образец к правой границе, и ряды матрицы переставали читаться как ряды.
+   У блочного контейнера авто-отступ на строчном элементе даёт 0. */
+.k-m-cell {
+  display: block;
+  padding: var(--space-4);
+  min-width: 0;
+  border-right: 1px solid var(--color-border-soft);
+  border-bottom: 1px solid var(--color-border-soft);
+}
+.k-m-cell > * { max-width: 100%; }
+
+/* Контекст-обёртки. Правила вида `.bc-edit .help-tip.solid` без предка не
+   срабатывают, поэтому предок в ячейке нужен — но его собственное
+   оформление (тень панели, скругление 32 px, отступы 24 px, ширина поля
+   200 px) к показываемому компоненту отношения не имеет и мешает. Гасим
+   вид, оставляя структуру. */
+.k-m-cell .bc-edit, .k-stage .bc-edit {
+  padding: 0; background: none; border-radius: 0; box-shadow: none;
+}
+/* Слайдер своей карточкой: правила дорожки записаны через .sfield, поэтому
+   предок нужен, но его вид поля гасится — как у .bc-edit выше. */
+.k-m-cell .k-track-only, .k-stage .k-track-only { border: 0; background: none; height: var(--space-4); }
+.k-m-err { font: 400 12px/1.4 var(--font-family-text); color: var(--color-text-danger); }
+/* Комбинации, которой в продукте нет, в матрице соответствует пустая клетка
+   (B3) — подписывать её нечем и не нужно. Подпись нужна только на стенде,
+   где значения выбирает читатель и пустая площадка читалась бы как поломка. */
+.k-na { font: 400 12px/16px var(--font-family-text); color: var(--color-text-tertiary); }
+
+/* Помеченная клетка — третий вид (B3): форма в продукте есть, а правила ей
+   не написали. От пустой её отличает видимая пометка, от обычной — то, что
+   образца в ней нет. Пунктир, а не сплошная рамка: сплошная читалась бы
+   как ещё один образец, у которого просто нет содержимого. */
+.k-m-mark {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 36px; padding: var(--space-2) var(--space-3);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-xs);
+  font: 600 12px/15px var(--font-family-text);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  text-align: center;
+}
+
+/* ---------- стенд ---------- */
+
+.k-stand { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: var(--space-6); align-items: start; }
+.k-stage-wrap { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; }
+.k-stage {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 160px; padding: var(--space-6);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-sm);
+}
+.k-code {
+  display: block;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-xs);
+  font: 400 12px/1.4 var(--font-family-text);
+  color: var(--color-text-secondary);
+  overflow-x: auto;
+  white-space: pre;
+}
+.k-panel { display: flex; flex-direction: column; gap: var(--space-3); }
+.k-field { display: flex; flex-direction: column; gap: var(--space-1); }
+.k-field-cap { font: 400 12px/16px var(--font-family-text); color: var(--color-text-tertiary); }
+.k-input {
+  height: 40px; padding: 0 var(--space-3);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-control); border-radius: var(--radius-xs);
+  font: 400 14px/17px var(--font-family-text); color: var(--color-text-primary);
+}
+
+/* ---------- таблицы стайл-гайда ---------- */
+/* Одна форма на всё, как у Ant: заголовок строкой сверху, строки через
+   тонкий делитель, значение с образцом слева. */
+
+.k-found { display: flex; flex-direction: column; gap: var(--space-4); }
+
+/* Ширины колонок одинаковые во всех таблицах справочника и заданы в ch, а
+   не в max-content: при max-content каждая таблица меряет себя сама, и
+   соседние не совпадают по вертикали — читать невозможно. ch привязан к
+   кеглю, магических пикселей не появляется. 34ch — длина самого длинного
+   имени токена (--color-base-neutral-900-a10). */
+/* Строка таблицы — флекс-блок, граница на строке.
+   Сеткой было нельзя: границу рисовала каждая ячейка по своей высоте, и
+   под одной строкой получалось три линии на разных уровнях — заметнее
+   всего там, где образец на 42 px стоит рядом с именем на 14 px. Здесь
+   линию рисует один элемент, расходиться нечему.
+   Ширины колонок — flex-basis, одинаковый во всех таблицах. */
+
+.k-tbl, .k-styles { display: flex; flex-direction: column; }
+.k-styles { margin-bottom: var(--space-4); }
+
+.k-row {
+  display: flex; align-items: center;
+  border-bottom: 1px solid var(--color-border-soft);
+}
+.k-row > * {
+  padding: var(--space-2) var(--space-4) var(--space-2) 0;
+  min-width: 0;
+}
+.k-row > *:first-child { padding-left: var(--space-3); }
+.k-row-head {
+  background: var(--color-bg-data);
+}
+.k-row-head > * {
+  font: 600 12px/1.3 var(--font-family-text);
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+/* колонки таблицы токенов */
+.k-c1 { flex: 0 0 34ch; }
+.k-c2 { flex: 1 1 auto; }
+/* колонки таблицы иконок */
+.k-i1 { flex: 0 0 34ch; }
+.k-i2 { flex: 0 0 10ch; }
+.k-i3 { flex: 0 0 10ch; display: flex; align-items: center; color: var(--color-text-primary); }
+.k-i3 svg { display: block; }
+
+
+/* колонки таблицы стилей набора */
+.k-s1 { flex: 0 0 16ch; }
+.k-s2 { flex: 0 0 calc(12ch + 30px); }
+.k-s3 { flex: 1 1 auto; }
+
+.k-tbl-name { font: 400 14px/1.45 var(--font-family-text); color: var(--color-text-primary); }
+.k-tbl-value { display: flex; align-items: center; gap: var(--space-2); font: 400 14px/1.45 var(--font-family-text); color: var(--color-text-primary); }
+.k-styles .k-tbl-name, .k-styles .k-tbl-value { white-space: nowrap; }
+
+.k-swatch {
+  position: relative;
+  display: block; width: 20px; height: 20px; flex: none;
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px var(--color-border-control);
+  background-image:
+    linear-gradient(45deg, var(--color-bg-card) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--color-bg-card) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--color-bg-card) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--color-bg-card) 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0;
+}
+.k-swatch > i { position: absolute; inset: 0; display: block; }
+
+@media (max-width: 1100px) {
+  .k-shell { grid-template-columns: minmax(0, 1fr); }
+  .k-rail { position: static; flex-direction: row; flex-wrap: wrap; max-height: none; }
+  .k-stand { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------- типографика ---------- */
+
+.k-faces { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: var(--space-3); }
+.k-face {
+  display: flex; align-items: center; gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-sm);
+}
+/* Тон текста: свойство текста, а не компонент (B1) — поэтому образцы стоят
+   в стайл-гайде рядом с токенами текста, а не карточкой среди компонентов.
+   Строка, а не таблица: у тона нет ни кегля, ни отступа, сравнивать тут
+   нечего кроме самого цвета. */
+.k-tones { display: flex; flex-wrap: wrap; gap: var(--space-6); }
+.k-tone { display: flex; flex-direction: column; gap: var(--space-1); }
+.k-tone-sample { font: 400 14px/1.45 var(--font-family-text); }
+.k-tone-name { font: 400 12px/16px var(--font-family-text); color: var(--color-text-primary); }
+.k-tone-token { font: 400 12px/16px var(--font-family-text); color: var(--color-text-tertiary); }
+
+.k-face-aa { font-size: 42px; line-height: 1; color: var(--color-text-primary); }
+.k-face-meta { display: flex; flex-direction: column; gap: 2px; }
+.k-face-name { font: 500 14px/1.45 var(--font-family-text); color: var(--color-text-primary); }
+.k-face-weight { font: 400 12px/1.4 var(--font-family-text); color: var(--color-text-tertiary); }
+
+/* ---------- справочный слой в ките ---------- */
+
+/* Панели и полоса лежат на сером поле панели обзора; полоса в ките не
+   липнет к странице — прилипание показывает вариант .stuck. */
+.k-ref-canvas { padding: var(--space-4); border-radius: var(--radius-lg); background: var(--color-bg-card); }
+.k-ref-canvas .ref-strip { position: static; }
+
+/* Контекста `.player-sticky` в ките больше нет: опцию stuck у панели табов
+   сняли (C1 — класс стоит на предке, а не на ней), и вместе с опцией ушла
+   единственная карточка, которой этот предок был нужен. */
+.k-ref-kpi { width: 100%; max-width: calc(var(--size-field) + 6 * var(--space-5)); box-sizing: border-box; }
+.k-ref-wide { min-width: calc(3 * var(--size-field)); }
+
+
+/* Образец тёмного значения — на тёмной подложке, иначе прозрачные значения
+   (белый 8 %, 16 %) на белом не видны. */
+.k-swatch-dark { background: var(--color-bg-strong); }
+/* две колонки значений одной ширины — светлая и тёмная стоят столбиком */
+.k-c3 { flex: 1 1 0; min-width: 0; }
+
+/* Гантель без строки таблицы: высоту и блочность ей давала ячейка строки. */
+.k-m-cell .ref-dumb-track, .k-stage .ref-dumb-track { display: block; height: var(--space-5); }
